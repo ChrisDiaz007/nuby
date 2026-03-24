@@ -6,13 +6,14 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
     <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
-
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
-
   <body>
-    <main class="container mx-auto mt-28 px-5 flex">
+    <header>
+      <%= render "shared/navbar" unless controller_name == "pages" && action_name == "home" %>
+    </header>
+    <main class="container mx-auto mt-5 px-5 flex">
       <%= yield %>
     </main>
   </body>
