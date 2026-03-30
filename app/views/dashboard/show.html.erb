@@ -1,4 +1,3 @@
-  
 <div class="container mx-auto px-4 py-8 max-w-2xl">
   <h1 class="text-2xl font-bold mb-6">Today's Meals</h1>
   <% if @today_logs.empty? %>
@@ -17,7 +16,7 @@
                 <p class="text-sm text-gray-500"><%= log.servings %> serving(s)</p>
               </div>
               <div class="flex items-center gap-4">
-                <p class="text-sm"><%= ((log.food.calories_per_100g || 0) * log.servings / 100).round %> kcal</p>
+                <p class="text-sm"><%= ((log.food.calories_per_serving || 0) * log.servings).round %> kcal</p>
                 <%= button_to "✕", food_log_path(log), method: :delete, class: "text-red-400 hover:text-red-600 text-sm" %>
               </div>
             </div>

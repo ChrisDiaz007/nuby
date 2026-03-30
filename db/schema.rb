@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_03_30_192722) do
+ActiveRecord::Schema[7.1].define(version: 2026_03_30_210154) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -53,6 +53,7 @@ ActiveRecord::Schema[7.1].define(version: 2026_03_30_192722) do
     t.string "serving_size"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.decimal "calories_per_serving"
     t.index ["barcode"], name: "index_foods_on_barcode", unique: true
   end
 
