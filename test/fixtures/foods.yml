@@ -1,0 +1,23 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  barcode: MyString
+  name: MyString
+  brand: MyString
+  calories_per_100g: 9.99
+  fat_100g: 9.99
+  carbohydrates_100g: 9.99
+  protein_100g: 9.99
+  nutri_score: MyString
+  serving_size: MyString
+
+two:
+  barcode: MyString
+  name: MyString
+  brand: MyString
+  calories_per_100g: 9.99
+  fat_100g: 9.99
+  carbohydrates_100g: 9.99
+  protein_100g: 9.99
+  nutri_score: MyString
+  serving_size: MyString

@@ -10,9 +10,24 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_03_23_184039) do
+ActiveRecord::Schema[7.1].define(version: 2026_03_30_165458) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "foods", force: :cascade do |t|
+    t.string "barcode", null: false
+    t.string "name"
+    t.string "brand"
+    t.decimal "calories_per_100g", precision: 8, scale: 2
+    t.decimal "fat_100g", precision: 8, scale: 2
+    t.decimal "carbohydrates_100g", precision: 8, scale: 2
+    t.decimal "protein_100g", precision: 8, scale: 2
+    t.string "nutri_score"
+    t.string "serving_size"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["barcode"], name: "index_foods_on_barcode", unique: true
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
