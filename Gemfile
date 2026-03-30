@@ -72,3 +72,4 @@ end
 gem "ostruct"
 
 gem 'devise'
+gem 'openfoodfacts'
