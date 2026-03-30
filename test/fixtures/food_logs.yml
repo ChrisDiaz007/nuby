@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: one
+  food: one
+  servings: 9.99
+  meal_type: MyString
+  logged_on: 2026-03-30
+
+two:
+  user: two
+  food: two
+  servings: 9.99
+  meal_type: MyString
+  logged_on: 2026-03-30
