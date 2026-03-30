@@ -1,0 +1,40 @@
+  
+<div class="container mx-auto px-4 py-8 max-w-md">
+  <div class="border rounded-lg p-6 shadow">
+    <h1 class="text-2xl font-bold mb-1"><%= @food.name %></h1>
+    <p class="text-gray-500 mb-4"><%= @food.brand %></p>
+    <div class="grid grid-cols-2 gap-4 mb-6">
+      <div class="bg-gray-50 rounded p-3 text-center">
+        <p class="text-sm text-gray-500">Calories</p>
+        <p class="text-xl font-bold"><%= @food.calories_per_100g %></p>
+        <p class="text-xs text-gray-400">per 100g</p>
+      </div>
+      <div class="bg-gray-50 rounded p-3 text-center">
+        <p class="text-sm text-gray-500">Serving size</p>
+        <p class="text-xl font-bold"><%= @food.serving_size || "—" %></p>
+      </div>
+    </div>
+    <div class="grid grid-cols-3 gap-3 mb-6">
+      <div class="text-center">
+        <p class="text-sm text-gray-500">Fat</p>
+        <p class="font-semibold"><%= @food.fat_100g %>g</p>
+      </div>
+      <div class="text-center">
+        <p class="text-sm text-gray-500">Carbs</p>
+        <p class="font-semibold"><%= @food.carbohydrates_100g %>g</p>
+      </div>
+      <div class="text-center">
+        <p class="text-sm text-gray-500">Protein</p>
+        <p class="font-semibold"><%= @food.protein_100g %>g</p>
+      </div>
+    </div>
+    <% if @food.nutri_score.present? %>
+      <p class="mb-6">Nutri-Score: <span class="font-bold uppercase"><%= @food.nutri_score %></span></p>
+    <% end %>
+    <div class="flex gap-3">
+      <%= button_to "Add to my list", user_foods_path, params: { user_food: { food_id: @food.id } }, class: "bg-lime-500 text-white px-4
+  py-2 rounded hover:bg-lime-600" %>
+      <%= link_to "Dismiss", scan_foods_path, class: "px-4 py-2 rounded border hover:bg-gray-50" %>
+    </div>
+  </div>
+</div>

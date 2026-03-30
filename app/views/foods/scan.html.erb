@@ -1,0 +1,11 @@
+  
+<div class="container mx-auto px-4 py-8 max-w-md">
+  <h1 class="text-2xl font-bold mb-6">Scan a Barcode</h1>
+  <%= form_with url: lookup_foods_path, method: :post do |f| %>
+    <div class="mb-4">
+      <%= f.label :barcode, "Barcode", class: "block text-sm font-medium mb-1" %>
+      <%= f.text_field :barcode, class: "w-full border rounded px-3 py-2", placeholder: "e.g. 0016000275287", autofocus: true %>
+    </div>
+    <%= f.submit "Look up", class: "bg-lime-500 text-white px-4 py-2 rounded hover:bg-lime-600" %>
+  <% end %>
+</div>

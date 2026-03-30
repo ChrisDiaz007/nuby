@@ -3,4 +3,13 @@ Rails.application.routes.draw do
   root to: "pages#home"
 
   resources :users, only: [:index, :show, :edit, :create]
+
+  resources :foods, only: [:show] do
+    collection do
+      get :scan
+      post :lookup
+    end
+  end
+
+  resources :user_foods, only: [:create, :destroy]
 end
