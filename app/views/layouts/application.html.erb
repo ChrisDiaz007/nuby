@@ -10,6 +10,12 @@
     <%= javascript_importmap_tags %>
   </head>
   <body>
+    <% if notice %>
+      <div class="bg-green-100 text-green-800 px-4 py-3 text-center"><%= notice %></div>
+    <% end %>
+    <% if alert %>
+      <div class="bg-red-100 text-red-800 px-4 py-3 text-center"><%= alert %></div>
+    <% end %>
     <main class="2xl:min-h-screen bg-gradient-to-b from-lime-100 via-green-50 to-white flex items-center justify-center">
       <%= yield %>
     </main>

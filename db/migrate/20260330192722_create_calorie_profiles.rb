@@ -1,7 +1,7 @@
 class CreateCalorieProfiles < ActiveRecord::Migration[7.1]
   def change
     create_table :calorie_profiles do |t|
-      t.references :user, null: false, foreign_key: true
+      t.references :user, null: false, foreign_key: true, index: { unique: true }
       t.integer :daily_target
       t.integer :age
       t.string :sex
@@ -13,7 +13,5 @@ class CreateCalorieProfiles < ActiveRecord::Migration[7.1]
 
       t.timestamps
     end
-
-    add_index :calorie_profiles, :user_id, unique: true
   end
 end
