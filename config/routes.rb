@@ -13,6 +13,6 @@ Rails.application.routes.draw do
 
   resources :user_foods, only: [:index, :create, :destroy]
   resources :food_logs, only: [:create, :destroy]
-
   get "dashboard", to: "dashboard#show", as: :dashboard
+  resource :calorie_profile, only: [:new, :create, :edit, :update]
 end
