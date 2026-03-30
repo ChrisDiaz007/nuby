@@ -1,36 +1,41 @@
-<nav class="navbar navbar-expand-sm navbar-light navbar-lewagon">
-  <div class="container-fluid">
-    <%= link_to "#", class: "navbar-brand" do %>
-      <%= image_tag "https://raw.githubusercontent.com/lewagon/fullstack-images/master/uikit/logo.png" %>
+  <% if user_signed_in? %>
+  <%# Bottom navbar on mobile %>
+  <nav class="sm:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 flex justify-around items-center h-16 z-50">
+    <%= link_to root_path, data: { turbo: false }, class: "flex flex-col items-center text-gray-500 hover:text-lime-600" do %>
+      <i class="fa-solid fa-house text-xl"></i>
+      <span class="text-xs mt-1">Home</span>
     <% end %>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto">
-        <% if user_signed_in? %>
-          <li class="nav-item active">
-            <%= link_to "Home", "#", class: "nav-link" %>
-          </li>
-          <li class="nav-item">
-            <%= link_to "Messages", "#", class: "nav-link" %>
-          </li>
-          <li class="nav-item dropdown">
-            <a href="#" class="avatar" id="navbarDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <%= image_tag "https://kitt.lewagon.com/placeholder/users/ssaunier", class: "avatar", alt: "dropdown menu" %>
-            </a>
-            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-              <%= link_to "Action", "#", class: "dropdown-item" %>
-              <%= link_to "Another action", "#", class: "dropdown-item" %>
-              <%= link_to "Log out", destroy_user_session_path, data: {turbo_method: :delete}, class: "dropdown-item" %>
-            </div>
-          </li>
-        <% else %>
-          <li class="nav-item">
-            <%= link_to "Login", new_user_session_path, class: "nav-link" %>
-          </li>
-        <% end %>
-      </ul>
+    <%= link_to dashboard_path, class: "flex flex-col items-center text-gray-500 hover:text-lime-600" do %>
+      <i class="fa-solid fa-chart-simple text-xl"></i>
+      <span class="text-xs mt-1">Chart</span>
+    <% end %>
+    <%= link_to scan_foods_path, class: "flex flex-col items-center text-gray-500 hover:text-lime-600" do %>
+      <i class="fa-solid fa-barcode text-xl"></i>
+      <span class="text-xs mt-1">Scan</span>
+    <% end %>
+    <%= link_to destroy_user_session_path, data: { turbo_method: :delete }, class: "flex flex-col items-center text-gray-500
+  hover:text-lime-600" do %>
+      <i class="fa-solid fa-right-from-bracket text-xl"></i>
+      <span class="text-xs mt-1">Log out</span>
+    <% end %>
+  </nav>
+  <%# Top navbar on desktop %>
+  <nav class="hidden sm:flex fixed top-0 left-0 right-0 bg-white border-b border-gray-200 px-8 h-14 items-center justify-between z-50">
+    <span class="font-bold text-lime-600 text-lg">Nuvy</span>
+    <div class="flex gap-6 items-center">
+      <%= link_to root_path, data: { turbo: false }, class: "flex items-center gap-2 text-gray-600 hover:text-lime-600" do %>
+        <i class="fa-solid fa-house"></i> Home
+      <% end %>
+      <%= link_to dashboard_path, class: "flex items-center gap-2 text-gray-600 hover:text-lime-600" do %>
+        <i class="fa-solid fa-chart-simple"></i> Chart
+      <% end %>
+      <%= link_to scan_foods_path, class: "flex items-center gap-2 text-gray-600 hover:text-lime-600" do %>
+        <i class="fa-solid fa-barcode"></i> Scan
+      <% end %>
+      <%= link_to destroy_user_session_path, data: { turbo_method: :delete }, class: "flex items-center gap-2 text-gray-600
+  hover:text-lime-600" do %>
+        <i class="fa-solid fa-right-from-bracket"></i> Log out
+      <% end %>
     </div>
-  </div>
-</nav>
+  </nav>
+<% end %>

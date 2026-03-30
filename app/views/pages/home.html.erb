@@ -1,6 +1,57 @@
-<div class="">
-  <%= image_tag "nuvy.png", class: "mx-auto" %>
-  <h3 class="text-xl font-bold">Track food facts and daily calories, reach your health goals</h3>
-  <p class="text-sm">This app simplifies nutrition and makes healthy living truly achievable.</p>
-  <%= link_to "Get Ready", new_user_session_path, class: "text-center rounded-3xl py-2 bg-green-600 block w-full" %>
-</div>
+  <% if user_signed_in? %>
+  <div class="container mx-auto px-4 py-6 max-w-md w-full">
+    <%# User name %>
+    <h1 class="text-2xl font-bold mb-1"><%= current_user.first_name %> <%= current_user.last_name %> 👋</h1>
+    <div class="bg-white rounded-2xl p-2">
+      <p class="text-gray-500 text-sm mb-6">Daily intake</p>
+      <%# Progress bar %>
+      <div class="mb-6">
+        <div class="flex justify-between text-sm mb-1">
+          <span><%= @total_calories.round %> kcal eaten</span>
+          <span><%= @daily_target %> kcal goal</span>
+        </div>
+        <% percentage = [(@total_calories / @daily_target * 100).round, 100].min %>
+        <div class="w-full bg-gray-200 rounded-full h-4">
+          <div class="h-4 rounded-full <%= @total_calories > @daily_target ? 'bg-red-500' : 'bg-lime-500' %>"
+               style="width: <%= percentage %>%"></div>
+        </div>
+      </div>
+    </div>
+    <%# Week selector %>
+    <div class="flex justify-between mb-6">
+      <% @week_dates.each do |date| %>
+        <%= link_to root_path(date: date), data: { turbo: false },
+              class: "flex flex-col items-center px-2 py-1 rounded-lg #{date == @selected_date ? 'bg-lime-500 text-white' : 'text-gray-500
+  hover:bg-gray-100'}" do %>
+          <span class="text-xs"><%= date.strftime("%a") %></span>
+          <span class="text-sm font-semibold"><%= date.strftime("%-d") %></span>
+        <% end %>
+      <% end %>
+    </div>
+    <%# Meal sections %>
+    <% ["breakfast", "lunch", "dinner"].each do |meal| %>
+      <div class="mb-4 border rounded-lg p-4">
+        <div class="flex justify-between items-center">
+          <%= link_to food_logs_path(meal_type: meal, date: @selected_date), class: "flex-1" do %>
+            <h2 class="font-semibold capitalize"><%= meal %></h2>
+          <% end %>
+          <div class="flex items-center gap-3">
+            <span class="text-sm text-gray-500">
+              <%= @meals[meal]&.sum { |log| ((log.food.calories_per_serving || 0) * log.servings).round } || 0 %> kcal
+            </span>
+            <%= link_to "+ Add", new_food_log_path(meal_type: meal, date: @selected_date), class: "text-lime-600 text-sm font-medium
+            hover:underline" %>
+            <%= link_to ">", food_logs_path(meal_type: meal, date: @selected_date), class: "text-gray-400 font-bold" %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+<% else %>
+  <div class="">
+    <%= image_tag "nuvy.png", class: "mx-auto" %>
+    <h3 class="text-xl font-bold">Track food facts and daily calories, reach your health goals</h3>
+    <p class="text-sm">This app simplifies nutrition and makes healthy living truly achievable.</p>
+    <%= link_to "Get Ready", new_user_session_path, class: "text-center rounded-3xl py-2 bg-green-600 block w-full" %>
+  </div>
+<% end %>

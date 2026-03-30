@@ -1,0 +1,21 @@
+<div class="container mx-auto px-4 py-6 max-w-md">
+  <h1 class="text-xl font-bold capitalize mb-1"><%= @meal_type %></h1>
+  <p class="text-gray-500 text-sm mb-6"><%= @date.strftime("%A, %B %-d") %></p>
+  <% if @logs.empty? %>
+    <p class="text-gray-500 mb-4">Nothing logged for this meal.</p>
+  <% else %>
+    <div class="border rounded-lg divide-y mb-6">
+      <% @logs.each do |log| %>
+        <div class="flex justify-between items-center px-4 py-3">
+          <div>
+            <p class="font-medium"><%= log.food.name %></p>
+            <p class="text-sm text-gray-500"><%= log.servings %> serving(s) · <%= ((log.food.calories_per_serving || 0) *
+  log.servings).round %> kcal</p>
+          </div>
+          <%= button_to "✕", food_log_path(log), method: :delete, class: "text-red-400 hover:text-red-600 text-sm" %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+  <%= link_to "+ Add more", new_food_log_path(meal_type: @meal_type, date: @date), class: "text-lime-600 font-medium hover:underline" %>
+</div>

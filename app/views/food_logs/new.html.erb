@@ -1,0 +1,29 @@
+<div class="container mx-auto px-4 py-6 max-w-md">
+  <h1 class="text-xl font-bold capitalize mb-1">Add to <%= @meal_type %></h1>
+  <p class="text-gray-500 text-sm mb-6"><%= Date.parse(@date.to_s).strftime("%A, %B %-d") %></p>
+  <% if @user_foods.empty? %>
+    <p class="text-gray-500">No saved foods yet. <%= link_to "Scan one", scan_foods_path, class: "text-lime-600 underline" %></p>
+  <% else %>
+    <div class="space-y-3">
+      <% @user_foods.each do |user_food| %>
+        <%= form_with url: food_logs_path, method: :post do |f| %>
+          <%= f.hidden_field :food_id, value: user_food.food.id, name: "food_log[food_id]" %>
+          <%= f.hidden_field :meal_type, value: @meal_type, name: "food_log[meal_type]" %>
+          <%= f.hidden_field :logged_on, value: @date, name: "food_log[logged_on]" %>
+          <div class="border rounded-lg p-4 flex justify-between items-center">
+            <div>
+              <p class="font-semibold"><%= user_food.food.name %></p>
+              <p class="text-sm text-gray-500"><%= user_food.food.brand %></p>
+              <p class="text-sm"><%= user_food.food.calories_per_serving %> kcal / serving</p>
+            </div>
+            <div class="flex items-center gap-2">
+              <%= f.number_field :servings, value: 1, min: 0.5, step: 0.5, class: "border rounded px-2 py-1 text-sm w-16", name:
+  "food_log[servings]" %>
+              <%= f.submit "Add", class: "bg-lime-500 text-white px-3 py-1 rounded text-sm hover:bg-lime-600" %>
+            </div>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+  <% end %>
+</div>

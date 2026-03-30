@@ -12,7 +12,7 @@ Rails.application.routes.draw do
   end
 
   resources :user_foods, only: [:index, :create, :destroy]
-  resources :food_logs, only: [:create, :destroy]
+  resources :food_logs, only: [:index, :new, :create, :destroy]
   get "dashboard", to: "dashboard#show", as: :dashboard
   resource :calorie_profile, only: [:new, :create, :edit, :update]
 end
