@@ -1,4 +1,9 @@
 class UserFoodsController < ApplicationController
+
+  def index
+    @user_foods = current_user.user_foods.includes(:food)
+  end
+
   def create
     food = Food.find(params[:user_food][:food_id])
     current_user.user_foods.find_or_create_by(food: food)

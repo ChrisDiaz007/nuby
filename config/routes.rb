@@ -11,5 +11,5 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :user_foods, only: [:create, :destroy]
+  resources :user_foods, only: [:index, :create, :destroy]
 end
