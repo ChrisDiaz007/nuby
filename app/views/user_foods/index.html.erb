@@ -1,4 +1,3 @@
-  
 <div class="container mx-auto px-4 py-8 max-w-md">
   <h1 class="text-2xl font-bold mb-6">My Saved Foods</h1>
   <% if @user_foods.empty? %>
@@ -7,14 +6,26 @@
   <% else %>
     <div class="space-y-3">
       <% @user_foods.each do |user_food| %>
-        <div class="border rounded-lg p-4 flex justify-between items-center">
-          <div>
-            <p class="font-semibold"><%= user_food.food.name %></p>
-            <p class="text-sm text-gray-500"><%= user_food.food.brand %></p>
-            <p class="text-sm"><%= user_food.food.calories_per_100g %> kcal per 100g</p>
-          </div>
-          <%= button_to "Remove", user_food_path(user_food), method: :delete, class: "text-red-500 text-sm hover:underline", form: {
+        <div class="border rounded-lg p-4">
+          <div class="flex justify-between items-center mb-3">
+            <div>
+              <p class="font-semibold"><%= user_food.food.name %></p>
+              <p class="text-sm text-gray-500"><%= user_food.food.brand %></p>
+              <p class="text-sm"><%= user_food.food.calories_per_100g %> kcal per 100g</p>
+            </div>
+            <%= button_to "Remove", user_food_path(user_food), method: :delete, class: "text-red-500 text-sm hover:underline", form: {
   data: { turbo_confirm: "Remove this food?" } } %>
+          </div>
+          <%= form_with url: food_logs_path, method: :post do |f| %>
+            <%= f.hidden_field :food_id, value: user_food.food.id, name: "food_log[food_id]" %>
+            <div class="flex gap-2">
+              <%= f.select :meal_type, ["breakfast", "lunch", "dinner"], {}, class: "border rounded px-2 py-1 text-sm", name: "food_log[meal_type]"
+   %>
+              <%= f.number_field :servings, value: 1, min: 0.5, step: 0.5, class: "border rounded px-2 py-1 text-sm w-20", name:
+  "food_log[servings]" %>
+              <%= f.submit "Log", class: "bg-lime-500 text-white px-3 py-1 rounded text-sm hover:bg-lime-600" %>
+            </div>
+          <% end %>
         </div>
       <% end %>
     </div>
