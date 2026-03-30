@@ -1,5 +1,22 @@
 <div class="container mx-auto px-4 py-8 max-w-2xl">
   <h1 class="text-2xl font-bold mb-6">Today's Meals</h1>
+  <%# Progress bar %>
+  <div class="mb-8">
+    <div class="flex justify-between text-sm mb-1">
+      <span><%= @total_calories.round %> kcal eaten</span>
+      <span><%= @daily_target %> kcal goal</span>
+    </div>
+    <% percentage = [(@total_calories / @daily_target * 100).round, 100].min %>
+    <div class="w-full bg-gray-200 rounded-full h-4">
+      <div class="h-4 rounded-full <%= @total_calories > @daily_target ? 'bg-red-500' : 'bg-lime-500' %>"
+             style="width: <%= percentage %>%"></div>
+    </div>
+  </div>
+  <%# Weekly chart %>
+  <div class="mb-8">
+    <canvas id="weeklyChart" height="120"></canvas>
+  </div>
+  <%# Meal table %>
   <% if @today_logs.empty? %>
     <p class="text-gray-500 mb-6">No meals logged today. <%= link_to "Go to your saved foods", user_foods_path, class: "text-lime-600
   underline" %> to log one.</p>
@@ -29,3 +46,38 @@
     </div>
   <% end %>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script>
+  const ctx = document.getElementById('weeklyChart').getContext('2d');
+  const dailyTarget = <%= @daily_target %>;
+  const data = <%= raw @weekly_data.to_json %>;
+
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: data.map(d => d.date),
+      datasets: [{
+        label: 'Calories',
+        data: data.map(d => d.calories),
+        backgroundColor: data.map(d => d.calories > dailyTarget ? '#ef4444' : '#84cc16')
+      }]
+    },
+    options: {
+      plugins: {
+        legend: { display: false },
+        annotation: {
+          annotations: {
+            goal: {
+              type: 'line',
+              yMin: dailyTarget,
+              yMax: dailyTarget,
+              borderColor: '#6b7280',
+              borderDash: [6, 3]
+            }
+          }
+        }
+      },
+      scales: { y: { beginAtZero: true } }
+    }
+  });
+</script>
