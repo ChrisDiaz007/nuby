@@ -1,11 +1,22 @@
-  
-<div class="container mx-auto px-4 py-8 max-w-md">
+<div class="container mx-auto px-4 py-8 max-w-md" data-controller="barcode-scanner">
   <h1 class="text-2xl font-bold mb-6">Scan a Barcode</h1>
-  <%= form_with url: lookup_foods_path, method: :post do |f| %>
+  <%# Camera preview — QuaggaJS renders into this div %>
+  <div data-barcode-scanner-target="preview" class="hidden mb-4 rounded-lg overflow-hidden"></div>
+  <button data-barcode-scanner-target="startBtn" data-action="click->barcode-scanner#start"
+    class="w-full bg-lime-500 text-white px-4 py-3 rounded-lg hover:bg-lime-600 flex items-center justify-center gap-2 mb-6">
+    <i class="fa-solid fa-camera"></i> Scan with camera
+  </button>
+  <button data-barcode-scanner-target="stopBtn" data-action="click->barcode-scanner#stop"
+    class="w-full hidden border px-4 py-3 rounded-lg hover:bg-gray-50 flex items-center justify-center gap-2 mb-6">
+    <i class="fa-solid fa-stop"></i> Stop camera
+  </button>
+  <p class="text-center text-gray-400 text-sm mb-4">— or enter manually —</p>
+  <%= form_with url: lookup_foods_path, method: :post, data: { barcode_scanner_target: "form" } do |f| %>
     <div class="mb-4">
       <%= f.label :barcode, "Barcode", class: "block text-sm font-medium mb-1" %>
-      <%= f.text_field :barcode, class: "w-full border rounded px-3 py-2", placeholder: "e.g. 0016000275287", autofocus: true %>
+      <%= f.text_field :barcode, class: "w-full border rounded px-3 py-2", placeholder: "e.g. 0016000275287",
+          data: { barcode_scanner_target: "input" } %>
     </div>
-    <%= f.submit "Look up", class: "bg-lime-500 text-white px-4 py-2 rounded hover:bg-lime-600" %>
+    <%= f.submit "Look up", class: "bg-lime-500 text-white px-4 py-2 rounded hover:bg-lime-600 w-full" %>
   <% end %>
 </div>

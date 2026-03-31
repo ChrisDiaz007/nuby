@@ -15,5 +15,7 @@ class OpenFoodFactsService
       nutri_score: product.nutrition_grades,
       serving_size: product.serving_size
     }
+  rescue StandardError
+    nil
   end
 end
