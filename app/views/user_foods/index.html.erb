@@ -12,6 +12,11 @@
               <p class="font-semibold"><%= user_food.food.name %></p>
               <p class="text-sm text-gray-500"><%= user_food.food.brand %></p>
               <p class="text-sm"><%= user_food.food.calories_per_100g %> kcal per 100g</p>
+              <% if user_food.food.nutri_score.present? %>
+                <span class="<%= nutri_score_color(user_food.food.nutri_score) %> text-xs font-bold uppercase px-2 py-0.5 rounded-full">
+                  <%= user_food.food.nutri_score.upcase %>
+                </span>
+              <% end %>
             </div>
             <%= button_to "Remove", user_food_path(user_food), method: :delete, class: "text-red-500 text-sm hover:underline", form: {
   data: { turbo_confirm: "Remove this food?" } } %>
