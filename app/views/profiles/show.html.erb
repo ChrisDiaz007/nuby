@@ -1,0 +1,23 @@
+<div class="container mx-auto px-4 py-8 max-w-md">
+  <h1 class="text-2xl font-bold mb-6">Profile</h1>
+  <div class="border rounded-lg divide-y mb-6">
+    <div class="flex justify-between px-4 py-3">
+      <span class="text-gray-500 text-sm">Name</span>
+      <span class="font-medium"><%= current_user.first_name %> <%= current_user.last_name %></span>
+    </div>
+    <div class="flex justify-between px-4 py-3">
+      <span class="text-gray-500 text-sm">Email</span>
+      <span class="font-medium"><%= current_user.email %></span>
+    </div>
+    <div class="flex justify-between px-4 py-3">
+      <span class="text-gray-500 text-sm">Daily calorie goal</span>
+      <span class="font-medium"><%= @calorie_profile&.daily_target || "Not set" %> kcal</span>
+    </div>
+  </div>
+  <div class="flex flex-col gap-3">
+    <%= link_to "Edit profile", edit_profile_path, class: "text-center bg-lime-500 text-white px-4 py-2 rounded hover:bg-lime-600" %>
+    <%= link_to "Update calorie goal", edit_calorie_profile_path, class: "text-center border px-4 py-2 rounded hover:bg-gray-50" %>
+    <%= button_to "Sign out", destroy_user_session_path, method: :delete, class: "text-center text-red-500 border border-red-300 px-4
+  py-2 rounded hover:bg-red-50" %>
+  </div>
+</div>

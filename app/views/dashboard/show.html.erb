@@ -1,50 +1,11 @@
+  
 <div class="container mx-auto px-4 py-8 max-w-2xl">
-  <h1 class="text-2xl font-bold mb-6">Today's Meals</h1>
-  <%# Progress bar %>
-  <div class="mb-8">
-    <div class="flex justify-between text-sm mb-1">
-      <span><%= @total_calories.round %> kcal eaten</span>
-      <span><%= @daily_target %> kcal goal</span>
-    </div>
-    <% percentage = [(@total_calories / @daily_target * 100).round, 100].min %>
-    <div class="w-full bg-gray-200 rounded-full h-4">
-      <div class="h-4 rounded-full <%= @total_calories > @daily_target ? 'bg-red-500' : 'bg-lime-500' %>"
-             style="width: <%= percentage %>%"></div>
-    </div>
-  </div>
+  <h1 class="text-2xl font-bold mb-6">My Activity</h1>
   <%# Weekly chart %>
+  <h2 class="text-lg font-semibold mb-3">Tracking Stats</h2>
   <div class="mb-8">
     <canvas id="weeklyChart" height="120"></canvas>
   </div>
-  <%# Meal table %>
-  <% if @today_logs.empty? %>
-    <p class="text-gray-500 mb-6">No meals logged today. <%= link_to "Go to your saved foods", user_foods_path, class: "text-lime-600
-  underline" %> to log one.</p>
-  <% else %>
-    <% ["breakfast", "lunch", "dinner"].each do |meal| %>
-      <% next if @meals[meal].blank? %>
-      <div class="mb-6">
-        <h2 class="text-lg font-semibold capitalize mb-2"><%= meal %></h2>
-        <div class="border rounded-lg divide-y">
-          <% @meals[meal].each do |log| %>
-            <div class="flex justify-between items-center px-4 py-3">
-              <div>
-                <p class="font-medium"><%= log.food.name %></p>
-                <p class="text-sm text-gray-500"><%= log.servings %> serving(s)</p>
-              </div>
-              <div class="flex items-center gap-4">
-                <p class="text-sm"><%= ((log.food.calories_per_serving || 0) * log.servings).round %> kcal</p>
-                <%= button_to "✕", food_log_path(log), method: :delete, class: "text-red-400 hover:text-red-600 text-sm" %>
-              </div>
-            </div>
-          <% end %>
-        </div>
-      </div>
-    <% end %>
-    <div class="text-right font-bold text-lg mt-4">
-      Total: <%= @total_calories.round %> kcal
-    </div>
-  <% end %>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script>
@@ -64,18 +25,7 @@
     },
     options: {
       plugins: {
-        legend: { display: false },
-        annotation: {
-          annotations: {
-            goal: {
-              type: 'line',
-              yMin: dailyTarget,
-              yMax: dailyTarget,
-              borderColor: '#6b7280',
-              borderDash: [6, 3]
-            }
-          }
-        }
+        legend: { display: false }
       },
       scales: { y: { beginAtZero: true } }
     }

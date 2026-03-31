@@ -13,10 +13,9 @@
       <i class="fa-solid fa-barcode text-xl"></i>
       <span class="text-xs mt-1">Scan</span>
     <% end %>
-    <%= link_to destroy_user_session_path, data: { turbo_method: :delete }, class: "flex flex-col items-center text-gray-500
-  hover:text-lime-600" do %>
-      <i class="fa-solid fa-right-from-bracket text-xl"></i>
-      <span class="text-xs mt-1">Log out</span>
+    <%= link_to profile_path, class: "flex flex-col items-center text-gray-500 hover:text-lime-600" do %>
+      <i class="fa-solid fa-user text-xl"></i>
+      <span class="text-xs mt-1">Profile</span>
     <% end %>
   </nav>
   <%# Top navbar on desktop %>
@@ -32,9 +31,8 @@
       <%= link_to scan_foods_path, class: "flex items-center gap-2 text-gray-600 hover:text-lime-600" do %>
         <i class="fa-solid fa-barcode"></i> Scan
       <% end %>
-      <%= link_to destroy_user_session_path, data: { turbo_method: :delete }, class: "flex items-center gap-2 text-gray-600
-  hover:text-lime-600" do %>
-        <i class="fa-solid fa-right-from-bracket"></i> Log out
+      <%= link_to profile_path, class: "flex items-center gap-2 text-gray-600 hover:text-lime-600" do %>
+        <i class="fa-solid fa-user"></i> Profile
       <% end %>
     </div>
   </nav>

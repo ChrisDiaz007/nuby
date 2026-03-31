@@ -44,7 +44,7 @@ class CalorieProfilesController < ApplicationController
     end
 
     if @calorie_profile.update(calorie_profile_params)
-      redirect_to dashboard_path, notice: "Calorie goal updated!"
+      redirect_to profile_path, notice: "Calorie goal updated!"
     else
       render :edit, status: :unprocessable_entity
     end
