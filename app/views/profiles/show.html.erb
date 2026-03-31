@@ -1,25 +1,91 @@
-<div class="container mx-auto px-4 py-8 max-w-md">
-  <h1 class="text-2xl font-bold mb-6">Profile</h1>
-  <div class="border rounded-lg divide-y mb-6">
-    <div class="flex justify-between px-4 py-3">
-      <span class="text-gray-500 text-sm">Name</span>
-      <span class="font-medium"><%= current_user.first_name %> <%= current_user.last_name %></span>
+<div class="pf sm:max-w-md sm:mx-auto">
+
+  <%# AVATAR + NAME %>
+  <div class="pf-fu pf-d1" style="display:flex; flex-direction:column; align-items:center; text-align:center; margin-bottom:28px;">
+    <div style="width:72px; height:72px; border-radius:50%; background:var(--green); display:flex; align-items:center; justify-content:center; color:#fff; font-size:26px; font-weight:800; box-shadow:0 4px 14px rgba(92,190,59,0.35); margin-bottom:12px;">
+      <%= current_user.first_name[0].upcase %>
     </div>
-    <div class="flex justify-between px-4 py-3">
-      <span class="text-gray-500 text-sm">Email</span>
-      <span class="font-medium"><%= current_user.email %></span>
+    <h1 style="font-size:20px; font-weight:800; color:var(--text); margin:0;"><%= current_user.first_name %> <%= current_user.last_name %></h1>
+    <p style="font-size:12px; color:var(--sub); margin:3px 0 0;"><%= current_user.email %></p>
+  </div>
+
+  <%# INFO CARD %>
+  <div class="pf-card pf-fu pf-d2" style="margin-bottom:20px;">
+    <div class="pf-row">
+      <span style="font-size:12px; font-weight:700; color:var(--sub); text-transform:uppercase; letter-spacing:0.05em;">First Name</span>
+      <span style="font-size:14px; font-weight:700; color:var(--text);"><%= current_user.first_name %></span>
     </div>
-    <div class="flex justify-between px-4 py-3">
-      <span class="text-gray-500 text-sm">Daily calorie goal</span>
-      <span class="font-medium"><%= @calorie_profile&.daily_target || "Not set" %> kcal</span>
+    <div class="pf-row">
+      <span style="font-size:12px; font-weight:700; color:var(--sub); text-transform:uppercase; letter-spacing:0.05em;">Last Name</span>
+      <span style="font-size:14px; font-weight:700; color:var(--text);"><%= current_user.last_name %></span>
+    </div>
+    <div class="pf-row">
+      <span style="font-size:12px; font-weight:700; color:var(--sub); text-transform:uppercase; letter-spacing:0.05em;">Email</span>
+      <span style="font-size:14px; font-weight:600; color:var(--sub);"><%= current_user.email %></span>
+    </div>
+    <div class="pf-row">
+      <span style="font-size:12px; font-weight:700; color:var(--sub); text-transform:uppercase; letter-spacing:0.05em;">Daily Goal</span>
+      <span style="font-size:14px; font-weight:700; color:var(--green-dk);"><%= @calorie_profile&.daily_target || "Not set" %> kcal</span>
     </div>
   </div>
-  <div class="flex flex-col gap-3">
-    <%= link_to "Edit profile", edit_profile_path, class: "text-center bg-lime-500 text-white px-4 py-2 rounded hover:bg-lime-600" %>
-    <%= link_to "Saved foods", user_foods_path, class: "text-center border px-4 py-2 rounded hover:bg-gray-50" %>
-    <%= link_to "Update calorie goal", edit_calorie_profile_path, class: "text-center border px-4 py-2 rounded hover:bg-gray-50" %>
-    <%= link_to "Retake calorie survey", survey_calorie_profile_path, class: "text-center border px-4 py-2 rounded hover:bg-gray-50" %>
-    <%= button_to "Sign out", destroy_user_session_path, method: :delete, class: "text-center text-red-500 border border-red-300 px-4
-  py-2 rounded hover:bg-red-50" %>
+
+  <%# ACTION BUTTONS %>
+  <div class="pf-fu pf-d3" style="display:flex; flex-direction:column; gap:10px;">
+
+    <%= link_to edit_profile_path, class: "pf-action" do %>
+      <div class="pf-action-icon" style="background:#E8F5DE;">
+        <i class="fa-solid fa-pen" style="color:var(--green); font-size:13px;"></i>
+      </div>
+      <div style="flex:1;">
+        <p style="font-size:14px; font-weight:700; color:var(--text); margin:0;">Edit Profile</p>
+        <p style="font-size:11px; color:var(--sub); margin:2px 0 0;">Update your name</p>
+      </div>
+      <i class="fa-solid fa-chevron-right" style="color:var(--sub); font-size:11px;"></i>
+    <% end %>
+
+    <%= link_to user_foods_path, class: "pf-action" do %>
+      <div class="pf-action-icon" style="background:#E3F2FD;">
+        <i class="fa-solid fa-bookmark" style="color:#1E88E5; font-size:13px;"></i>
+      </div>
+      <div style="flex:1;">
+        <p style="font-size:14px; font-weight:700; color:var(--text); margin:0;">Saved Foods</p>
+        <p style="font-size:11px; color:var(--sub); margin:2px 0 0;">Your personal food list</p>
+      </div>
+      <i class="fa-solid fa-chevron-right" style="color:var(--sub); font-size:11px;"></i>
+    <% end %>
+
+    <%= link_to edit_calorie_profile_path, class: "pf-action" do %>
+      <div class="pf-action-icon" style="background:#FFF3E0;">
+        <i class="fa-solid fa-bullseye" style="color:#FB8C00; font-size:13px;"></i>
+      </div>
+      <div style="flex:1;">
+        <p style="font-size:14px; font-weight:700; color:var(--text); margin:0;">Update Calorie Goal</p>
+        <p style="font-size:11px; color:var(--sub); margin:2px 0 0;">Change your daily target</p>
+      </div>
+      <i class="fa-solid fa-chevron-right" style="color:var(--sub); font-size:11px;"></i>
+    <% end %>
+
+    <%= link_to survey_calorie_profile_path, class: "pf-action" do %>
+      <div class="pf-action-icon" style="background:#FCE4EC;">
+        <i class="fa-solid fa-clipboard-list" style="color:#E91E63; font-size:13px;"></i>
+      </div>
+      <div style="flex:1;">
+        <p style="font-size:14px; font-weight:700; color:var(--text); margin:0;">Retake Survey</p>
+        <p style="font-size:11px; color:var(--sub); margin:2px 0 0;">Recalculate your calorie goal</p>
+      </div>
+      <i class="fa-solid fa-chevron-right" style="color:var(--sub); font-size:11px;"></i>
+    <% end %>
+
+    <%= button_to destroy_user_session_path, method: :delete, class: "pf-action", style: "border:none; cursor:pointer; width:100%; text-align:left;" do %>
+      <div class="pf-action-icon" style="background:#FFEBEE;">
+        <i class="fa-solid fa-right-from-bracket" style="color:#E53935; font-size:13px;"></i>
+      </div>
+      <div style="flex:1;">
+        <p style="font-size:14px; font-weight:700; color:#E53935; margin:0;">Sign Out</p>
+        <p style="font-size:11px; color:var(--sub); margin:2px 0 0;">Log out of your account</p>
+      </div>
+    <% end %>
+
   </div>
+
 </div>

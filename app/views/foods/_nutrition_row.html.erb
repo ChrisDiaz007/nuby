@@ -1,26 +1,31 @@
 <div data-controller="nutrition-row">
-  <button data-action="click->nutrition-row#toggle" class="w-full flex items-center gap-3 px-4 py-3 hover:bg-gray-50 border-t">
-    <div class="flex-1 text-left">
-      <p class="font-medium text-sm"><%= label %></p>
-      <p class="text-xs text-gray-400"><%= subtitle %></p>
+  <button data-action="click->nutrition-row#toggle" class="nr-btn">
+    <% if local_assigns[:icon] %>
+      <div style="width:32px; height:32px; background:<%= icon_bg %>; border-radius:9px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+        <i class="fa-solid <%= icon %>" style="color:<%= icon_color %>; font-size:12px;"></i>
+      </div>
+    <% end %>
+    <div style="flex:1; text-align:left;">
+      <p style="font-size:13px; font-weight:700; color:var(--text); margin:0;"><%= label %></p>
+      <p style="font-size:11px; color:var(--sub); margin:2px 0 0;"><%= subtitle %></p>
     </div>
-    <span class="text-sm font-semibold mr-2"><%= value %></span>
+    <span style="font-size:13px; font-weight:700; color:var(--text); margin-right:8px;"><%= value %></span>
     <% if amount.nil?
-         dot_color = "bg-gray-300"
+         dot_bg = "#D1D5DB"
        elsif negative
-         dot_color = amount.to_f > (max * 0.7) ? "bg-red-500" : amount.to_f > (max * 0.4) ? "bg-orange-400" : "bg-yellow-400"
+         dot_bg = amount.to_f > (max * 0.7) ? "#EF4444" : amount.to_f > (max * 0.4) ? "#F97316" : "#F59E0B"
        else
-         dot_color = amount.to_f > (max * 0.5) ? "bg-green-500" : amount.to_f > (max * 0.2) ? "bg-yellow-400" : "bg-red-500"
+         dot_bg = amount.to_f > (max * 0.5) ? "#5CBE3B" : amount.to_f > (max * 0.2) ? "#F59E0B" : "#EF4444"
        end %>
-    <span class="<%= dot_color %> w-3 h-3 rounded-full"></span>
-    <i class="fa-solid fa-chevron-down text-gray-400 text-xs transition-transform" data-nutrition-row-target="arrow"></i>
+    <span class="nr-dot" style="background:<%= dot_bg %>;"></span>
+    <i class="fa-solid fa-chevron-down" style="color:var(--sub); font-size:11px; margin-left:8px; transition:transform 0.2s;" data-nutrition-row-target="arrow"></i>
   </button>
-  <div class="hidden px-4 pb-4 bg-gray-50" data-nutrition-row-target="content">
+  <div class="hidden nr-content" data-nutrition-row-target="content">
     <% percentage = amount.nil? ? 0 : [(amount.to_f / max * 100).round, 100].min %>
-    <div class="relative h-3 rounded-full overflow-hidden mt-2" style="background: <%= negative ? 'linear-gradient(to right, #22c55e, #facc15, #ef4444)' : 'linear-gradient(to right, #ef4444, #facc15, #22c55e)' %>">
-      <div class="absolute top-0 bottom-0 w-0.5 bg-black opacity-70" style="left: <%= percentage %>%"></div>
+    <div style="position:relative; height:10px; border-radius:99px; overflow:hidden; margin-top:12px; background:<%= negative ? 'linear-gradient(to right, #5CBE3B, #F59E0B, #EF4444)' : 'linear-gradient(to right, #EF4444, #F59E0B, #5CBE3B)' %>">
+      <div style="position:absolute; top:0; bottom:0; width:2px; background:#fff; opacity:0.9; left:<%= percentage %>%;"></div>
     </div>
-    <div class="flex justify-between text-xs text-gray-400 mt-1">
+    <div style="display:flex; justify-content:space-between; font-size:10px; color:var(--sub); font-weight:600; margin-top:4px;">
       <span>0</span>
       <span><%= max %></span>
     </div>

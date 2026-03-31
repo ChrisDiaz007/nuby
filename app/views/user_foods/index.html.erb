@@ -1,38 +1,90 @@
-<div class="container mx-auto px-4 py-8 max-w-md">
-  <h1 class="text-2xl font-bold mb-6">My Saved Foods</h1>
+<div class="fd-page sm:max-w-md sm:mx-auto">
+
+  <%# HEADER %>
+  <div style="display:flex; align-items:center; gap:12px; margin-bottom:28px;">
+    <%= link_to profile_path, class: "fd-back-btn" do %>
+      <i class="fa-solid fa-arrow-left" style="color:var(--text); font-size:13px;"></i>
+    <% end %>
+    <div>
+      <h1 style="font-size:20px; font-weight:800; color:var(--text); margin:0;">Saved Foods</h1>
+      <p style="font-size:12px; color:var(--sub); margin:2px 0 0; font-weight:600;"><%= @user_foods.size %> item<%= @user_foods.size == 1 ? '' : 's' %> saved</p>
+    </div>
+  </div>
+
   <% if @user_foods.empty? %>
-    <p class="text-gray-500">You haven't saved any foods yet. <%= link_to "Scan one", scan_foods_path, class: "text-lime-600 underline"
-  %></p>
+    <div style="background:var(--card); border-radius:18px; padding:32px; text-align:center; box-shadow:0 2px 10px var(--shadow);">
+      <i class="fa-solid fa-barcode" style="color:var(--sub); font-size:30px; margin-bottom:12px; display:block;"></i>
+      <p style="font-size:14px; font-weight:700; color:var(--sub); margin:0 0 6px;">No saved foods yet</p>
+      <%= link_to scan_foods_path, style: "font-size:13px; color:var(--green); font-weight:700; text-decoration:none;" do %>
+        Scan a barcode to add one <i class="fa-solid fa-arrow-right" style="font-size:11px;"></i>
+      <% end %>
+    </div>
   <% else %>
-    <div class="space-y-3">
+    <div>
       <% @user_foods.each do |user_food| %>
-        <div class="border rounded-lg p-4">
-          <div class="flex justify-between items-center mb-3">
-            <div>
-              <p class="font-semibold"><%= user_food.food.name %></p>
-              <p class="text-sm text-gray-500"><%= user_food.food.brand %></p>
-              <p class="text-sm"><%= user_food.food.calories_per_100g %> kcal per 100g</p>
-              <% if user_food.food.nutri_score.present? %>
-                <span class="<%= nutri_score_color(user_food.food.nutri_score) %> text-xs font-bold uppercase px-2 py-0.5 rounded-full">
-                  <%= user_food.food.nutri_score.upcase %>
-                </span>
+        <% food = user_food.food %>
+        <% score_bg = case food.nutri_score&.downcase
+                      when "a" then "#1B7C3A"
+                      when "b" then "#5CBE3B"
+                      when "c" then "#F59E0B"
+                      when "d" then "#F97316"
+                      when "e" then "#EF4444"
+                      else nil end %>
+
+        <div style="background:var(--card); border-radius:20px; box-shadow:0 2px 12px var(--shadow); margin-bottom:12px; overflow:hidden;">
+
+          <%# FOOD ROW — clickable %>
+          <div style="display:flex; align-items:center; gap:14px; padding:14px 16px;">
+            <%# Icon / image %>
+            <% if food.image_url.present? %>
+              <%= link_to food_path(food) do %>
+                <%= image_tag food.image_url, style: "width:52px; height:52px; border-radius:14px; object-fit:contain; background:var(--bg); border:1px solid var(--border); flex-shrink:0;" %>
               <% end %>
-            </div>
-            <%= button_to "Remove", user_food_path(user_food), method: :delete, class: "text-red-500 text-sm hover:underline", form: {
-  data: { turbo_confirm: "Remove this food?" } } %>
+            <% else %>
+              <%= link_to food_path(food) do %>
+                <div style="width:52px; height:52px; border-radius:14px; background:var(--green-lt); display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                  <i class="fa-solid fa-utensils" style="color:var(--green-dk); font-size:18px;"></i>
+                </div>
+              <% end %>
+            <% end %>
+
+            <%# Info %>
+            <%= link_to food_path(food), style: "flex:1; text-decoration:none; min-width:0;" do %>
+              <p style="font-size:14px; font-weight:800; color:var(--text); margin:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;"><%= food.name %></p>
+              <p style="font-size:11px; color:var(--sub); margin:2px 0 5px; font-weight:600;"><%= food.brand.presence || "No brand" %></p>
+              <div style="display:flex; align-items:center; gap:8px;">
+                <% if score_bg %>
+                  <span style="background:<%= score_bg %>; color:#fff; font-size:10px; font-weight:800; padding:2px 8px; border-radius:99px;">
+                    <%= food.nutri_score.upcase %>
+                  </span>
+                <% end %>
+                <span style="font-size:11px; color:var(--sub); font-weight:600;"><%= food.calories_per_100g&.round %> kcal/100g</span>
+              </div>
+            <% end %>
+
+            <%# Remove %>
+            <%= button_to user_food_path(user_food), method: :delete,
+              style: "width:30px; height:30px; border-radius:50%; background:#FFEBEE; border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; flex-shrink:0;",
+              form: { data: { turbo_confirm: "Remove this food?" } } do %>
+              <i class="fa-solid fa-xmark" style="color:#EF5350; font-size:12px;"></i>
+            <% end %>
           </div>
-          <%= form_with url: food_logs_path, method: :post do |f| %>
-            <%= f.hidden_field :food_id, value: user_food.food.id, name: "food_log[food_id]" %>
-            <div class="flex gap-2">
-              <%= f.select :meal_type, ["breakfast", "lunch", "dinner"], {}, class: "border rounded px-2 py-1 text-sm", name: "food_log[meal_type]"
-   %>
-              <%= f.number_field :servings, value: 1, min: 0.5, step: 0.5, class: "border rounded px-2 py-1 text-sm w-20", name:
-  "food_log[servings]" %>
-              <%= f.submit "Log", class: "bg-lime-500 text-white px-3 py-1 rounded text-sm hover:bg-lime-600" %>
-            </div>
-          <% end %>
+
+          <%# QUICK LOG FORM %>
+          <div style="border-top:1px solid var(--border); padding:12px 16px; background:var(--bg);">
+            <%= form_with url: food_logs_path, method: :post, style: "display:flex; align-items:center; gap:8px;" do |f| %>
+              <%= f.hidden_field :food_id, value: food.id, name: "food_log[food_id]" %>
+              <%= f.select :meal_type, ["breakfast", "lunch", "dinner"], {},
+                  class: "fl-select", name: "food_log[meal_type]", style: "flex:1;" %>
+              <%= f.number_field :servings, value: 1, min: 0.5, step: 0.5,
+                  class: "fl-servings-input", name: "food_log[servings]" %>
+              <%= f.submit "Log", class: "fl-add-btn" %>
+            <% end %>
+          </div>
+
         </div>
       <% end %>
     </div>
   <% end %>
+
 </div>

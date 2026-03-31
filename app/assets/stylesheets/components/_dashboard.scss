@@ -1,0 +1,49 @@
+.db {
+  font-family: 'Nunito', sans-serif;
+  background: var(--bg);
+  min-height: 100vh;
+  color: var(--text);
+  padding: 28px 20px 110px;
+  -webkit-font-smoothing: antialiased;
+}
+
+.db-card {
+  background: var(--card);
+  border-radius: 22px;
+  padding: 18px 16px;
+  box-shadow: 0 2px 14px var(--shadow);
+}
+
+.db-stat-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.db-sub-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.db-badge {
+  font-size: 11px;
+  font-weight: 700;
+  background: var(--green-lt);
+  color: var(--green-dk);
+  padding: 4px 10px;
+  border-radius: 99px;
+}
+
+@keyframes dbFadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.db-fu  { animation: dbFadeUp 0.45s cubic-bezier(0.22, 1, 0.36, 1) both; opacity: 0; }
+.db-d1  { animation-delay: 0.04s; }
+.db-d2  { animation-delay: 0.12s; }
+.db-d3  { animation-delay: 0.22s; }
+.db-d4  { animation-delay: 0.32s; }

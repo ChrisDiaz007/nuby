@@ -1,21 +1,48 @@
-<div class="container mx-auto px-4 py-6 max-w-md">
-  <h1 class="text-xl font-bold capitalize mb-1"><%= @meal_type %></h1>
-  <p class="text-gray-500 text-sm mb-6"><%= @date.strftime("%A, %B %-d") %></p>
+<div class="fd-page sm:max-w-md sm:mx-auto">
+
+  <%# HEADER %>
+  <div style="display:flex; align-items:center; gap:12px; margin-bottom:28px;">
+    <%= link_to root_path(date: @date), class: "fd-back-btn" do %>
+      <i class="fa-solid fa-arrow-left" style="color:var(--text); font-size:13px;"></i>
+    <% end %>
+    <div>
+      <h1 style="font-size:20px; font-weight:800; color:var(--text); margin:0; text-transform:capitalize;"><%= @meal_type %></h1>
+      <p style="font-size:12px; color:var(--sub); margin:2px 0 0; font-weight:600;"><%= @date.strftime("%A, %B %-d") %></p>
+    </div>
+  </div>
+
+  <%# LOGGED ITEMS %>
   <% if @logs.empty? %>
-    <p class="text-gray-500 mb-4">Nothing logged for this meal.</p>
+    <div style="background:var(--card); border-radius:18px; padding:28px; text-align:center; box-shadow:0 2px 10px var(--shadow); margin-bottom:20px;">
+      <i class="fa-solid fa-bowl-food" style="color:var(--sub); font-size:28px; margin-bottom:10px; display:block;"></i>
+      <p style="font-size:14px; font-weight:700; color:var(--sub); margin:0;">Nothing logged yet</p>
+      <p style="font-size:12px; color:var(--sub); margin:4px 0 0;">Add food below to get started</p>
+    </div>
   <% else %>
-    <div class="border rounded-lg divide-y mb-6">
+    <div style="margin-bottom:20px;">
       <% @logs.each do |log| %>
-        <div class="flex justify-between items-center px-4 py-3">
-          <div>
-            <p class="font-medium"><%= log.food.name %></p>
-            <p class="text-sm text-gray-500"><%= log.servings %> serving(s) · <%= ((log.food.calories_per_serving || 0) *
-  log.servings).round %> kcal</p>
+        <div class="fl-item">
+          <div style="width:40px; height:40px; border-radius:12px; background:var(--green-lt); display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+            <i class="fa-solid fa-utensils" style="color:var(--green-dk); font-size:14px;"></i>
           </div>
-          <%= button_to "✕", food_log_path(log), method: :delete, class: "text-red-400 hover:text-red-600 text-sm" %>
+          <%= link_to food_path(log.food), class: "fl-food-link" do %>
+            <p style="font-size:14px; font-weight:700; color:var(--text); margin:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;"><%= log.food.name %></p>
+            <p style="font-size:11px; color:var(--sub); margin:2px 0 0; font-weight:600;">
+              <%= log.servings %> serving<%= log.servings == 1 ? '' : 's' %> &middot;
+              <span style="color:var(--green-dk)"><%= ((log.food.calories_per_serving || 0) * log.servings).round %> kcal</span>
+            </p>
+          <% end %>
+          <%= button_to food_log_path(log), method: :delete, class: "fl-delete-btn" do %>
+            <i class="fa-solid fa-xmark" style="color:#EF5350; font-size:12px;"></i>
+          <% end %>
         </div>
       <% end %>
     </div>
   <% end %>
-  <%= link_to "+ Add more", new_food_log_path(meal_type: @meal_type, date: @date), class: "text-lime-600 font-medium hover:underline" %>
+
+  <%# ADD MORE BUTTON %>
+  <%= link_to new_food_log_path(meal_type: @meal_type, date: @date), class: "fd-btn-primary" do %>
+    <i class="fa-solid fa-plus"></i> Add Food
+  <% end %>
+
 </div>

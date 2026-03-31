@@ -1,12 +1,34 @@
-<div class="container mx-auto px-4 py-8 max-w-md">
-  <h1 class="text-2xl font-bold mb-2">Update Calorie Goal</h1>
-  <p class="text-gray-500 mb-6">Current goal: <%= @calorie_profile&.daily_target || "Not set" %> kcal</p>
-  <%= form_with model: @calorie_profile, url: calorie_profile_path, method: :patch do |f| %>
-    <%= f.hidden_field :entry_method, value: "manual" %>
-    <div class="mb-4">
-      <%= f.label :daily_target, "Daily calorie target (kcal)", class: "block text-sm font-medium mb-1" %>
-      <%= f.number_field :daily_target, class: "w-full border rounded px-3 py-2", placeholder: "e.g. 2000" %>
+<div class="pf sm:max-w-md sm:mx-auto">
+
+  <div style="display:flex; align-items:center; gap:12px; margin-bottom:28px;">
+    <%= link_to profile_path, class: "fd-back-btn" do %>
+      <i class="fa-solid fa-arrow-left" style="color:var(--text); font-size:13px;"></i>
+    <% end %>
+    <div>
+      <h1 style="font-size:20px; font-weight:800; color:var(--text); margin:0;">Update Calorie Goal</h1>
+      <p style="font-size:12px; color:var(--sub); margin:2px 0 0; font-weight:600;">
+        Current goal: <span style="color:var(--green-dk);"><%= @calorie_profile&.daily_target || "Not set" %> kcal</span>
+      </p>
     </div>
-    <%= f.submit "Save goal", class: "bg-lime-500 text-white px-4 py-2 rounded hover:bg-lime-600 w-full" %>
-  <% end %>
+  </div>
+
+  <div class="pf-card" style="padding:20px;">
+    <%= form_with model: @calorie_profile, url: calorie_profile_path, method: :patch do |f| %>
+      <%= f.hidden_field :entry_method, value: "manual" %>
+      <div style="margin-bottom:24px;">
+        <label class="pf-label">
+          <i class="fa-solid fa-fire" style="margin-right:4px;"></i> Daily Calorie Target (kcal)
+        </label>
+        <%= f.number_field :daily_target, class: "pf-input", placeholder: "e.g. 2000" %>
+      </div>
+      <%= f.submit "Save Goal", class: "pf-btn-primary" %>
+    <% end %>
+  </div>
+
+  <div style="text-align:center; margin-top:16px;">
+    <%= link_to survey_calorie_profile_path, style: "font-size:13px; color:var(--green); font-weight:700; text-decoration:none;" do %>
+      <i class="fa-solid fa-calculator" style="font-size:11px;"></i> Recalculate with survey instead
+    <% end %>
+  </div>
+
 </div>

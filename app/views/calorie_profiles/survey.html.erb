@@ -1,34 +1,85 @@
-<div class="container mx-auto px-4 py-8 max-w-md">
-  <h1 class="text-2xl font-bold mb-2">Calorie Goal Survey</h1>
-  <p class="text-gray-500 mb-6">We'll calculate your daily calorie goal based on your body and lifestyle.</p>
-  <%= form_with model: @calorie_profile, url: update_survey_calorie_profile_path, method: :patch do |f| %>
-    <div class="mb-4">
-      <%= f.label :age, "Age", class: "block text-sm font-medium mb-1" %>
-      <%= f.number_field :age, class: "w-full border rounded px-3 py-2", placeholder: "e.g. 25" %>
+<div class="pf sm:max-w-md sm:mx-auto">
+
+  <%# HEADER %>
+  <div style="display:flex; align-items:center; gap:12px; margin-bottom:28px;">
+    <%= link_to profile_path, class: "fd-back-btn" do %>
+      <i class="fa-solid fa-arrow-left" style="color:var(--text); font-size:13px;"></i>
+    <% end %>
+    <div>
+      <h1 style="font-size:20px; font-weight:800; color:var(--text); margin:0;">Calorie Survey</h1>
+      <p style="font-size:12px; color:var(--sub); margin:2px 0 0; font-weight:600;">We'll calculate your daily goal</p>
     </div>
-    <div class="mb-4">
-      <%= f.label :sex, "Sex", class: "block text-sm font-medium mb-1" %>
-      <%= f.select :sex, [["Male", "male"], ["Female", "female"]], { include_blank: "Select..." }, class: "w-full border rounded px-3
-  py-2" %>
+  </div>
+
+  <%# ICON BANNER %>
+  <div class="pf-fu pf-d1" style="background:var(--card); border-radius:20px; padding:20px; display:flex; align-items:center; gap:16px; margin-bottom:24px; box-shadow:0 2px 12px var(--shadow);">
+    <div style="width:52px; height:52px; border-radius:16px; background:rgba(92,190,59,0.12); display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+      <i class="fa-solid fa-calculator" style="color:var(--green); font-size:20px;"></i>
     </div>
-    <div class="mb-4">
-      <%= f.label :weight_lbs, "Weight (lbs)", class: "block text-sm font-medium mb-1" %>
-      <%= f.number_field :weight_lbs, class: "w-full border rounded px-3 py-2", placeholder: "e.g. 160" %>
-    </div>
-    <div class="mb-4">
-      <%= f.label :height_cm, "Height (cm)", class: "block text-sm font-medium mb-1" %>
-      <%= f.number_field :height_cm, class: "w-full border rounded px-3 py-2", placeholder: "e.g. 175" %>
-    </div>
-    <div class="mb-4">
-      <%= f.label :activity_level, "Activity level", class: "block text-sm font-medium mb-1" %>
-      <%= f.select :activity_level, [["Sedentary", "sedentary"], ["Lightly active", "lightly_active"], ["Moderately active",
-  "moderately_active"], ["Very active", "very_active"]], { include_blank: "Select..." }, class: "w-full border rounded px-3 py-2" %>
-    </div>
-    <div class="mb-6">
-      <%= f.label :goal_type, "Goal", class: "block text-sm font-medium mb-1" %>
-      <%= f.select :goal_type, [["Lose weight", "lose"], ["Maintain weight", "maintain"], ["Gain weight", "gain"]], { include_blank:
-  "Select..." }, class: "w-full border rounded px-3 py-2" %>
-    </div>
-    <%= f.submit "Calculate my goal", class: "bg-lime-500 text-white px-4 py-2 rounded hover:bg-lime-600 w-full" %>
-  <% end %>
+    <p style="font-size:13px; color:var(--sub); font-weight:600; margin:0; line-height:1.5;">
+      Tell us about yourself and we'll use the <strong style="color:var(--text);">Mifflin-St Jeor</strong> formula to calculate your ideal daily intake.
+    </p>
+  </div>
+
+  <%# FORM %>
+  <div class="pf-card pf-fu pf-d2" style="padding:20px;">
+    <%= form_with model: @calorie_profile, url: update_survey_calorie_profile_path, method: :patch do |f| %>
+
+      <div style="margin-bottom:18px;">
+        <label class="pf-label">
+          <i class="fa-solid fa-calendar" style="margin-right:4px;"></i> Age
+        </label>
+        <%= f.number_field :age, class: "pf-input", placeholder: "e.g. 25" %>
+      </div>
+
+      <div style="margin-bottom:18px;">
+        <label class="pf-label">
+          <i class="fa-solid fa-person" style="margin-right:4px;"></i> Sex
+        </label>
+        <%= f.select :sex, [["Male", "male"], ["Female", "female"]],
+            { include_blank: "Select..." }, class: "pf-input" %>
+      </div>
+
+      <div style="margin-bottom:18px;">
+        <label class="pf-label">
+          <i class="fa-solid fa-weight-scale" style="margin-right:4px;"></i> Weight (lbs)
+        </label>
+        <%= f.number_field :weight_lbs, class: "pf-input", placeholder: "e.g. 160" %>
+      </div>
+
+      <div style="margin-bottom:18px;">
+        <label class="pf-label">
+          <i class="fa-solid fa-ruler-vertical" style="margin-right:4px;"></i> Height (cm)
+        </label>
+        <%= f.number_field :height_cm, class: "pf-input", placeholder: "e.g. 175" %>
+      </div>
+
+      <div style="margin-bottom:18px;">
+        <label class="pf-label">
+          <i class="fa-solid fa-person-running" style="margin-right:4px;"></i> Activity Level
+        </label>
+        <%= f.select :activity_level,
+            [["Sedentary (little or no exercise)", "sedentary"],
+             ["Lightly active (1–3 days/week)", "lightly_active"],
+             ["Moderately active (3–5 days/week)", "moderately_active"],
+             ["Very active (6–7 days/week)", "very_active"]],
+            { include_blank: "Select..." }, class: "pf-input" %>
+      </div>
+
+      <div style="margin-bottom:28px;">
+        <label class="pf-label">
+          <i class="fa-solid fa-bullseye" style="margin-right:4px;"></i> Goal
+        </label>
+        <%= f.select :goal_type,
+            [["Lose weight", "lose"],
+             ["Maintain weight", "maintain"],
+             ["Gain weight", "gain"]],
+            { include_blank: "Select..." }, class: "pf-input" %>
+      </div>
+
+      <%= f.submit "Calculate My Goal", class: "pf-btn-primary" %>
+
+    <% end %>
+  </div>
+
 </div>

@@ -1,31 +1,160 @@
-<div class="container mx-auto px-4 py-8 max-w-2xl">
-  <h1 class="text-2xl font-bold mb-6">My Activity</h1>
-  <%# Weekly chart %>
-  <h2 class="text-lg font-semibold mb-3">Tracking Stats</h2>
-  <div class="mb-8">
-    <canvas id="weeklyChart" height="120"></canvas>
+<% pct        = @daily_target > 0 ? [(@total_calories.to_f / @daily_target * 100).round, 100].min : 0 %>
+<% over       = @total_calories > @daily_target %>
+<% remaining  = [(@daily_target - @total_calories).round, 0].max %>
+<% r          = 34 %>
+<% circ       = (2 * Math::PI * r).round(4) %>
+<% offset     = (circ * (1 - pct / 100.0)).round(4) %>
+
+<div class="db sm:max-w-md sm:mx-auto">
+
+  <%# HEADING %>
+  <div class="db-fu db-d1" style="margin-bottom:24px;">
+    <h1 style="font-size:22px; font-weight:800; color:var(--text); margin:0;">My Activity</h1>
+    <p style="font-size:12px; color:var(--sub); margin:3px 0 0;">
+      <%= @selected_date == Date.today ? "Today" : @selected_date.strftime("%A") %>
+      &middot; <%= @selected_date.strftime("%B %-d, %Y") %>
+    </p>
   </div>
+
+  <%# TOP STAT CARDS %>
+  <div class="db-stat-grid db-fu db-d2">
+
+    <%# Completed % card with ring %>
+    <div class="db-card" style="display:flex; flex-direction:column; align-items:center; text-align:center; gap:8px;">
+      <div style="position:relative; width:80px; height:80px;">
+        <svg viewBox="0 0 80 80" width="80" height="80" style="transform:rotate(-90deg);">
+          <defs>
+            <linearGradient id="dbRg" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="#5CBE3B"/>
+              <stop offset="100%" stop-color="#96E060"/>
+            </linearGradient>
+            <linearGradient id="dbRd" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="#FF5050"/>
+              <stop offset="100%" stop-color="#FF8080"/>
+            </linearGradient>
+          </defs>
+          <circle cx="40" cy="40" r="<%= r %>" fill="none" stroke="var(--green-lt)" stroke-width="7"/>
+          <circle cx="40" cy="40" r="<%= r %>" fill="none"
+            stroke="<%= over ? 'url(#dbRd)' : 'url(#dbRg)' %>"
+            stroke-width="7"
+            stroke-linecap="round"
+            stroke-dasharray="<%= circ %>"
+            stroke-dashoffset="<%= offset %>"/>
+        </svg>
+        <div style="position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center;">
+          <span style="font-size:15px; font-weight:800; color:<%= over ? 'var(--danger)' : 'var(--green-dk)' %>; line-height:1;"><%= pct %>%</span>
+        </div>
+      </div>
+      <div>
+        <p style="font-size:13px; font-weight:700; color:var(--text); margin:0;">Completed</p>
+        <p style="font-size:10px; color:var(--sub); margin:2px 0 0;">Calorie Goal</p>
+      </div>
+    </div>
+
+    <%# Calories today card %>
+    <div class="db-card" style="display:flex; flex-direction:column; justify-content:space-between; gap:12px;">
+      <div style="width:36px; height:36px; background:rgba(92,190,59,0.12); border-radius:10px; display:flex; align-items:center; justify-content:center;">
+        <i class="fa-solid fa-fire" style="color:var(--green); font-size:14px;"></i>
+      </div>
+      <div>
+        <p style="font-size:26px; font-weight:800; color:var(--text); margin:0; line-height:1;"><%= @total_calories.round %><span style="font-size:12px; font-weight:600; color:var(--sub);"> kcal</span></p>
+        <p style="font-size:11px; color:var(--sub); margin:4px 0 0; font-weight:600;">Eaten Today</p>
+      </div>
+    </div>
+
+  </div>
+
+  <%# SECONDARY STAT CARDS %>
+  <div class="db-sub-grid db-fu db-d3">
+    <div class="db-card" style="display:flex; flex-direction:column; gap:10px;">
+      <div style="width:32px; height:32px; background:#FFF3E0; border-radius:9px; display:flex; align-items:center; justify-content:center;">
+        <i class="fa-solid fa-bullseye" style="color:#FB8C00; font-size:12px;"></i>
+      </div>
+      <div>
+        <p style="font-size:20px; font-weight:800; color:var(--text); margin:0; line-height:1;"><%= remaining %><span style="font-size:11px; font-weight:500; color:var(--sub);"> kcal</span></p>
+        <p style="font-size:10px; color:var(--sub); margin:3px 0 0; font-weight:600;">Remaining</p>
+      </div>
+    </div>
+    <div class="db-card" style="display:flex; flex-direction:column; gap:10px;">
+      <div style="width:32px; height:32px; background:#E3F2FD; border-radius:9px; display:flex; align-items:center; justify-content:center;">
+        <i class="fa-solid fa-flag" style="color:#1E88E5; font-size:12px;"></i>
+      </div>
+      <div>
+        <p style="font-size:20px; font-weight:800; color:var(--text); margin:0; line-height:1;"><%= @daily_target %><span style="font-size:11px; font-weight:500; color:var(--sub);"> kcal</span></p>
+        <p style="font-size:10px; color:var(--sub); margin:3px 0 0; font-weight:600;">Daily Goal</p>
+      </div>
+    </div>
+  </div>
+
+  <%# BAR CHART CARD %>
+  <div class="db-card db-fu db-d4">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+      <p style="font-size:14px; font-weight:700; color:var(--text); margin:0;">Calorie Tracking</p>
+      <span class="db-badge">Weekly</span>
+    </div>
+    <p style="font-size:11px; color:var(--sub); margin:0 0 16px; font-weight:600;">Daily calories · Last 7 days</p>
+    <canvas id="weeklyChart" height="140"></canvas>
+  </div>
+
 </div>
+
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script>
   document.addEventListener("turbo:load", function() {
+    const existing = Chart.getChart("weeklyChart");
+    if (existing) existing.destroy();
+
     const ctx = document.getElementById('weeklyChart').getContext('2d');
     const dailyTarget = <%= @daily_target %>;
     const data = <%= raw @weekly_data.to_json %>;
+    const selectedDate = "<%= @selected_date.to_s %>";
 
     new Chart(ctx, {
       type: 'bar',
       data: {
         labels: data.map(d => d.date),
         datasets: [{
-          label: 'Calories',
           data: data.map(d => d.calories),
-          backgroundColor: data.map(d => d.calories > dailyTarget ? '#ef4444' : '#84cc16')
+          backgroundColor: data.map(d => {
+            if (d.full_date === selectedDate) return '#5CBE3B';
+            if (d.calories > dailyTarget) return '#FF8080';
+            return d.calories > 0 ? '#C8EDAF' : '#EEF7E4';
+          }),
+          borderRadius: 10,
+          borderSkipped: false,
+          maxBarThickness: 36
         }]
       },
       options: {
-        plugins: { legend: { display: false } },
-        scales: { y: { beginAtZero: true } }
+        onClick: (event, elements) => {
+          if (elements.length > 0) {
+            const index = elements[0].index;
+            const fullDate = data[index].full_date;
+            window.location.href = '/dashboard?date=' + fullDate;
+          }
+        },
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              label: ctx => ctx.parsed.y + ' kcal'
+            }
+          }
+        },
+        scales: {
+          x: {
+            grid: { display: false },
+            border: { display: false },
+            ticks: {
+              font: { family: 'Nunito', size: 11, weight: '600' },
+              color: '#7A8F72'
+            }
+          },
+          y: {
+            display: false,
+            beginAtZero: true
+          }
+        }
       }
     });
   });
