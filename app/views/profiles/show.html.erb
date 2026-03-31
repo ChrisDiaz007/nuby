@@ -16,6 +16,7 @@
   </div>
   <div class="flex flex-col gap-3">
     <%= link_to "Edit profile", edit_profile_path, class: "text-center bg-lime-500 text-white px-4 py-2 rounded hover:bg-lime-600" %>
+    <%= link_to "Saved foods", user_foods_path, class: "text-center border px-4 py-2 rounded hover:bg-gray-50" %>
     <%= link_to "Update calorie goal", edit_calorie_profile_path, class: "text-center border px-4 py-2 rounded hover:bg-gray-50" %>
     <%= link_to "Retake calorie survey", survey_calorie_profile_path, class: "text-center border px-4 py-2 rounded hover:bg-gray-50" %>
     <%= button_to "Sign out", destroy_user_session_path, method: :delete, class: "text-center text-red-500 border border-red-300 px-4

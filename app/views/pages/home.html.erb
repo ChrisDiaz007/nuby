@@ -1,51 +1,104 @@
-  <% if user_signed_in? %>
-  <div class="container mx-auto px-4 py-6 max-w-md w-full">
-    <%# User name %>
-    <h1 class="text-2xl font-bold mb-1"><%= current_user.first_name %> <%= current_user.last_name %> 👋</h1>
-    <div class="bg-white rounded-2xl p-2">
-      <p class="text-gray-500 text-sm mb-6">Daily intake</p>
-      <%# Progress bar %>
-      <div class="mb-6">
-        <div class="flex justify-between text-sm mb-1">
-          <span><%= @total_calories.round %> kcal eaten</span>
-          <span><%= @daily_target %> kcal goal</span>
+<% if user_signed_in? %>
+  <div class="hp sm:max-w-md sm:mx-auto">
+    <%# HEADER %>
+    <div class="fu d1" style="display:flex; align-items:center; justify-content:space-between; margin-bottom:26px;">
+      <div style="display:flex; align-items:center; gap:12px;">
+        <div style="width:46px; height:46px; border-radius:50%; background:var(--green); display:flex; align-items:center; justify-content:center; color:#fff; font-size:17px; font-weight:800; flex-shrink:0; box-shadow:0 4px 10px rgba(92,190,59,0.35);">
+          <%= current_user.first_name[0].upcase %>
         </div>
-        <% percentage = [(@total_calories / @daily_target * 100).round, 100].min %>
-        <div class="w-full bg-gray-200 rounded-full h-4">
-          <div class="h-4 rounded-full <%= @total_calories > @daily_target ? 'bg-red-500' : 'bg-lime-500' %>"
-               style="width: <%= percentage %>%"></div>
+        <div>
+          <p style="font-size:19px; font-weight:800; color:var(--text); margin:0; line-height:1.2;">Hello <%= current_user.first_name %> 👋</p>
+          <p style="font-size:12px; color:var(--sub); margin:0;">Track your daily intake</p>
         </div>
       </div>
+      <div style="background:var(--card); border-radius:14px; padding:8px 14px; box-shadow:0 2px 8px var(--shadow);">
+        <p style="font-size:11px; color:var(--sub); margin:0; font-weight:600;"><%= @selected_date.strftime("%b %-d") %></p>
+        <p style="font-size:10px; color:var(--sub); margin:2px 0 0; opacity:0.7;"><%= @selected_date.strftime("%A") %></p>
+      </div>
     </div>
-    <%# Week selector %>
-    <div class="flex justify-between mb-6">
+    <%# DAILY INTAKE CARD %>
+    <% pct = @daily_target > 0 ? [(@total_calories.to_f / @daily_target * 100).round, 100].min : 0 %>
+    <% over = @total_calories > @daily_target %>
+    <div class="fu d2" style="background:var(--card); border-radius:24px; padding:18px 20px; margin-bottom:18px; box-shadow:0 2px 16px var(--shadow);">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+        <p style="font-size:14px; font-weight:700; color:var(--text); margin:0;">Daily Intake</p>
+        <span style="background:<%= over ? '#FFE8E8' : '#DFF5CC' %>; color:<%= over ? '#CC3333' : '#3D9220' %>; font-size:11px; font-weight:700; padding:4px 12px; border-radius:99px;"><%= pct %>%</span>
+      </div>
+      <div class="prog-track">
+        <div class="prog-fill <%= over ? 'over' : '' %>" style="width:<%= pct %>%;"></div>
+      </div>
+      <div style="display:flex; justify-content:space-between; margin-top:10px;">
+        <span style="font-size:13px; font-weight:700; color:<%= over ? '#CC3333' : 'var(--green-dk)' %>;"><%= @total_calories.round %> kcal eaten</span>
+        <span style="font-size:13px; color:var(--sub); font-weight:600;"><%= @daily_target %> kcal goal</span>
+      </div>
+    </div>
+    <%# MACRO STATS %>
+    <% all_logs = @meals.values.flatten %>
+    <% total_protein = all_logs.sum { |l| ((l.food.protein_100g || 0) * l.servings).round(1) } %>
+    <% total_carbs   = all_logs.sum { |l| ((l.food.carbohydrates_100g || 0) * l.servings).round(1) } %>
+    <% total_fat     = all_logs.sum { |l| ((l.food.fat_100g || 0) * l.servings).round(1) } %>
+    <div class="fu d3" style="display:flex; gap:10px; margin-bottom:24px;">
+      <div class="stat-chip">
+        <div style="width:30px; height:30px; background:#E3F2FD; border-radius:9px; display:flex; align-items:center; justify-content:center; margin-bottom:6px;">
+          <i class="fa-solid fa-drumstick-bite" style="color:#1E88E5; font-size:12px;"></i>
+        </div>
+        <p style="font-size:16px; font-weight:800; color:var(--text); margin:0; line-height:1;"><%= total_protein.round %><span style="font-size:11px; font-weight:500; color:var(--sub);">g</span></p>
+        <p style="font-size:10px; color:var(--sub); margin:3px 0 0; font-weight:600;">Protein</p>
+      </div>
+      <div class="stat-chip">
+        <div style="width:30px; height:30px; background:#FFF3E0; border-radius:9px; display:flex; align-items:center; justify-content:center; margin-bottom:6px;">
+          <i class="fa-solid fa-wheat-awn" style="color:#FB8C00; font-size:12px;"></i>
+        </div>
+        <p style="font-size:16px; font-weight:800; color:var(--text); margin:0; line-height:1;"><%= total_carbs.round %><span style="font-size:11px; font-weight:500; color:var(--sub);">g</span></p>
+        <p style="font-size:10px; color:var(--sub); margin:3px 0 0; font-weight:600;">Carbs</p>
+      </div>
+      <div class="stat-chip">
+        <div style="width:30px; height:30px; background:#FCE4EC; border-radius:9px; display:flex; align-items:center; justify-content:center; margin-bottom:6px;">
+          <i class="fa-solid fa-droplet" style="color:#E91E63; font-size:12px;"></i>
+        </div>
+        <p style="font-size:16px; font-weight:800; color:var(--text); margin:0; line-height:1;"><%= total_fat.round %><span style="font-size:11px; font-weight:500; color:var(--sub);">g</span></p>
+        <p style="font-size:10px; color:var(--sub); margin:3px 0 0; font-weight:600;">Fat</p>
+      </div>
+    </div>
+    <%# WEEK SELECTOR %>
+    <div class="fu d4" style="display:flex; justify-content:space-between; background:var(--card); border-radius:20px; padding:8px; margin-bottom:24px; box-shadow:0 2px 10px var(--shadow);">
       <% @week_dates.each do |date| %>
-        <%= link_to root_path(date: date), data: { turbo: false },
-              class: "flex flex-col items-center px-2 py-1 rounded-lg #{date == @selected_date ? 'bg-lime-500 text-white' : 'text-gray-500
-  hover:bg-gray-100'}" do %>
-          <span class="text-xs"><%= date.strftime("%a") %></span>
-          <span class="text-sm font-semibold"><%= date.strftime("%-d") %></span>
+        <%= link_to root_path(date: date), data: { turbo: false }, class: "day-pill #{date == @selected_date ? 'active' : ''}" do %>
+          <span style="font-size:10px; font-weight:700; letter-spacing:0.02em;"><%= date.strftime("%a")[0] %></span>
+          <span style="font-size:15px; font-weight:800;"><%= date.strftime("%-d") %></span>
         <% end %>
       <% end %>
     </div>
-    <%# Meal sections %>
-    <% ["breakfast", "lunch", "dinner"].each do |meal| %>
-      <div class="mb-4 border rounded-lg p-4">
-        <div class="flex justify-between items-center">
-          <%= link_to food_logs_path(meal_type: meal, date: @selected_date), class: "flex-1" do %>
-            <h2 class="font-semibold capitalize"><%= meal %></h2>
-          <% end %>
-          <div class="flex items-center gap-3">
-            <span class="text-sm text-gray-500">
-              <%= @meals[meal]&.sum { |log| ((log.food.calories_per_serving || 0) * log.servings).round } || 0 %> kcal
-            </span>
-            <%= link_to "+ Add", new_food_log_path(meal_type: meal, date: @selected_date), class: "text-lime-600 text-sm font-medium
-            hover:underline" %>
-            <%= link_to ">", food_logs_path(meal_type: meal, date: @selected_date), class: "text-gray-400 font-bold" %>
+    <%# MEAL CARDS %>
+    <div class="fu d5">
+      <% [
+      ["breakfast", "fa-sun",       "#FFF8E1", "#FFB300"],
+      ["lunch",     "fa-cloud-sun", "#E8F5E9", "#43A047"],
+      ["dinner",    "fa-moon",      "#EDE7F6", "#7B1FA2"]
+    ].each do |meal, icon, bg, color| %>
+        <% meal_kcal   = @meals[meal]&.sum { |log| ((log.food.calories_per_serving || 0) * log.servings).round } || 0 %>
+        <% item_count  = @meals[meal]&.size || 0 %>
+        <div class="meal-card">
+          <div class="meal-thumb-icon" style="background:<%= bg %>;">
+            <i class="fa-solid <%= icon %>" style="color:<%= color %>; font-size:22px;"></i>
           </div>
+          <%= link_to food_logs_path(meal_type: meal, date: @selected_date), style: "flex:1; text-decoration:none; min-width:0;" do %>
+            <p style="font-size:15px; font-weight:700; color:var(--text); margin:0; text-transform:capitalize;"><%= meal %></p>
+            <p style="font-size:11px; color:var(--sub); margin:3px 0 0; font-weight:600;">
+              <% if item_count > 0 %>
+                <%= item_count %> <%= item_count == 1 ? 'item' : 'items' %> &middot;
+                <span style="color:var(--green-dk);"><%= meal_kcal %> kcal</span>
+              <% else %>
+                Tap to log food
+              <% end %>
+            </p>
+          <% end %>
+          <%= link_to new_food_log_path(meal_type: meal, date: @selected_date), class: "plus-btn" do %>
+            <i class="fa-solid fa-plus" style="color:#fff; font-size:13px;"></i>
+          <% end %>
         </div>
-      </div>
-    <% end %>
+      <% end %>
+    </div>
   </div>
 <% else %>
   <div class="">
