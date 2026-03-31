@@ -1,0 +1,18 @@
+<div class="container mx-auto px-4 py-8 max-w-md">
+  <h1 class="text-2xl font-bold mb-6">Edit Profile</h1>
+  <%= form_with model: current_user, url: profile_path, method: :patch do |f| %>
+    <div class="mb-6">
+      <%= f.label :email, "Email", class: "block text-sm font-medium mb-1" %>
+      <%= f.email_field :email, class: "w-full border rounded px-3 py-2 bg-gray-100 text-gray-400", disabled: true %>
+    </div>
+    <div class="mb-4">
+      <%= f.label :first_name, "First name", class: "block text-sm font-medium mb-1" %>
+      <%= f.text_field :first_name, class: "w-full border rounded px-3 py-2" %>
+    </div>
+    <div class="mb-6">
+      <%= f.label :last_name, "Last name", class: "block text-sm font-medium mb-1" %>
+      <%= f.text_field :last_name, class: "w-full border rounded px-3 py-2" %>
+    </div>
+    <%= f.submit "Save changes", class: "bg-lime-500 text-white px-4 py-2 rounded hover:bg-lime-600 w-full" %>
+  <% end %>
+</div>
