@@ -9,6 +9,9 @@ Rails.application.routes.draw do
       get :scan
       post :lookup
     end
+    member do
+      get :additives
+    end
   end
 
   resources :user_foods, only: [:index, :create, :destroy]

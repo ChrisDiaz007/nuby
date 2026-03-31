@@ -1,44 +1,148 @@
-<div class="container mx-auto px-4 py-8 max-w-md">
-  <div class="border rounded-lg p-6 shadow">
-    <h1 class="text-2xl font-bold mb-1"><%= @food.name %></h1>
-    <p class="text-gray-500 mb-4"><%= @food.brand %></p>
-    <div class="grid grid-cols-2 gap-4 mb-6">
-      <div class="bg-gray-50 rounded p-3 text-center">
-        <p class="text-sm text-gray-500">Calories</p>
-        <p class="text-xl font-bold"><%= @food.calories_per_100g %></p>
-        <p class="text-xs text-gray-400">per 100g</p>
-      </div>
-      <div class="bg-gray-50 rounded p-3 text-center">
-        <p class="text-sm text-gray-500">Serving size</p>
-        <p class="text-xl font-bold"><%= @food.serving_size || "—" %></p>
-      </div>
-    </div>
-    <div class="grid grid-cols-3 gap-3 mb-6">
-      <div class="text-center">
-        <p class="text-sm text-gray-500">Fat</p>
-        <p class="font-semibold"><%= @food.fat_100g %>g</p>
-      </div>
-      <div class="text-center">
-        <p class="text-sm text-gray-500">Carbs</p>
-        <p class="font-semibold"><%= @food.carbohydrates_100g %>g</p>
-      </div>
-      <div class="text-center">
-        <p class="text-sm text-gray-500">Protein</p>
-        <p class="font-semibold"><%= @food.protein_100g %>g</p>
-      </div>
-    </div>
-    <% if @food.nutri_score.present? %>
-      <div class="mb-6 flex items-center gap-2">
-        <span class="text-sm text-gray-500">Nutri-Score</span>
-        <span class="<%= nutri_score_color(@food.nutri_score) %> font-bold uppercase px-3 py-1 rounded-full text-sm">
-          <%= @food.nutri_score.upcase %>
-        </span>
+<div class="container mx-auto max-w-md pb-8">
+  <%# Top section %>
+  <div class="flex gap-4 p-4 bg-white mb-2">
+    <% if @food.image_url.present? %>
+      <%= image_tag @food.image_url, class: "w-24 h-24
+  object-contain rounded-lg border" %>
+    <% else %>
+      <div class="w-24 h-24 bg-gray-100 rounded-lg flex
+  items-center justify-center">
+        <i class="fa-solid fa-image text-gray-400
+  text-2xl"></i>
       </div>
     <% end %>
-    <div class="flex gap-3">
-      <%= button_to "Add to my list", user_foods_path, params: { user_food: { food_id: @food.id } }, class: "bg-lime-500 text-white px-4
-  py-2 rounded hover:bg-lime-600" %>
-      <%= link_to "Dismiss", scan_foods_path, class: "px-4 py-2 rounded border hover:bg-gray-50" %>
+    <div class="flex-1">
+      <h1 class="text-lg font-bold leading-tight"><%=
+  @food.name %></h1>
+      <p class="text-gray-500 text-sm mb-2"><%= @food.brand
+  %></p>
+      <div class="flex items-center gap-2">
+        <span class="<%= nutri_score_color(@food.nutri_score)
+  %> font-bold uppercase px-3 py-1 rounded-full text-sm">
+          <%= @food.nutri_score&.upcase || "?" %>
+        </span>
+        <% if @food.nutriscore_score.present? %>
+          <span class="text-sm text-gray-500"><%=
+  @food.nutriscore_score %>/100</span>
+        <% end %>
+      </div>
     </div>
+  </div>
+  <%# Negative section %>
+  <div class="bg-white mb-2">
+    <h2 class="px-4 py-3 font-bold text-gray-700
+  border-b">Negative</h2>
+    <%# Additives %>
+    <div data-controller="nutrition-row">
+      <button data-action="click->nutrition-row#toggle"
+        class="w-full flex items-center gap-3 px-4 py-3
+        hover:bg-gray-50">
+        <i class="fa-solid fa-flask text-gray-400 w-6"></i>
+        <div class="flex-1 text-left">
+          <p class="font-medium text-sm">Additives</p>
+          <p class="text-xs text-gray-400">Contains
+            additives</p>
+        </div>
+        <span class="text-sm font-semibold mr-2"><%=
+  @food.additives_count || 0 %></span>
+        <span class="<%= (@food.additives_count || 0) > 5 ?
+  'bg-red-500' : (@food.additives_count || 0) > 2 ?
+  'bg-orange-400' : 'bg-yellow-400' %> w-3 h-3
+  rounded-full"></span>
+        <i class="fa-solid fa-chevron-down text-gray-400
+  text-xs transition-transform"
+  data-nutrition-row-target="arrow"></i>
+      </button>
+      <div class="hidden px-4 pb-3 bg-gray-50"
+  data-nutrition-row-target="content">
+        <% if (@food.additives_count || 0) == 0 %>
+          <p class="text-sm text-green-600 flex items-center
+  gap-2"><i class="fa-solid fa-circle-check"></i> No
+            additives</p>
+        <% elsif (@food.additives_count || 0) <= 2 %>
+          <p class="text-sm text-yellow-600 flex items-center gap-2
+  mb-2"><i class="fa-solid fa-circle-exclamation"></i> Low risk
+            additives</p>
+          <%= link_to additives_food_path(@food), class: "text-sm
+  text-lime-600 flex items-center gap-1" do %>
+            <i class="fa-solid fa-circle-info"></i> More info on the
+            additives
+          <% end %>
+        <% else %>
+          <p class="text-sm text-red-600 flex items-center gap-2
+  mb-2"><i class="fa-solid fa-triangle-exclamation"></i>
+            Contains multiple additives</p>
+          <%= link_to additives_food_path(@food), class: "text-sm
+  text-lime-600 flex items-center gap-1" do %>
+            <i class="fa-solid fa-circle-info"></i> More info on the
+            additives
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+    <%# Energy %>
+    <%= render "nutrition_row", label: "Energy", subtitle:
+  "Limit it · per 100g", value:
+  "#{@food.calories_per_100g&.round} kcal", amount:
+  @food.calories_per_100g, max: 800, negative: true %>
+    <%# Sugar %>
+    <%= render "nutrition_row", label: "Sugar", subtitle:
+  "Avoid it · per 100g", value:
+  "#{@food.sugars_100g&.round(1)}g", amount: @food.sugars_100g,
+  max: 45, negative: true %>
+    <%# Saturated Fat %>
+    <%= render "nutrition_row", label: "Saturated Fat",
+  subtitle: "Avoid it · per 100g", value:
+  "#{@food.saturated_fat_100g&.round(1)}g", amount:
+  @food.saturated_fat_100g, max: 10, negative: true %>
+    <%# Salt %>
+    <%= render "nutrition_row", label: "Salt", subtitle:
+  "Limit it · per 100g", value: "#{@food.salt_100g&.round(2)}g",
+   amount: @food.salt_100g, max: 2.3, negative: true %>
+  </div>
+  <%# Positive section %>
+  <div class="bg-white mb-2">
+    <h2 class="px-4 py-3 font-bold text-gray-700
+  border-b">Positive</h2>
+    <%= render "nutrition_row", label: "Fiber", subtitle:
+  "Excellent quantity · per 100g", value:
+  "#{@food.fiber_100g&.round(1)}g", amount: @food.fiber_100g,
+  max: 9, negative: false %>
+    <%= render "nutrition_row", label: "Fruits, Vegetables &
+  Legumes", subtitle: "per 100g", value:
+  "#{@food.fruits_veg_100g&.round(1)}%", amount:
+  @food.fruits_veg_100g, max: 100, negative: false %>
+  </div>
+  <%# Nutrition Facts section %>
+  <div class="bg-white mb-2">
+    <h2 class="px-4 py-3 font-bold text-gray-700
+  border-b">Nutrition Facts</h2>
+    <div class="divide-y">
+      <div class="flex justify-between px-4 py-3">
+        <span class="text-sm">Fat</span>
+        <span class="text-sm font-semibold"><%=
+  @food.fat_100g&.round(1) %>g</span>
+      </div>
+      <div class="flex justify-between px-4 py-3">
+        <span class="text-sm">Carbohydrates</span>
+        <span class="text-sm font-semibold"><%=
+  @food.carbohydrates_100g&.round(1) %>g</span>
+      </div>
+      <div class="flex justify-between px-4 py-3">
+        <span class="text-sm">Protein</span>
+        <span class="text-sm font-semibold"><%=
+  @food.protein_100g&.round(1) %>g</span>
+      </div>
+    </div>
+  </div>
+  <%# Options %>
+  <div class="bg-white px-4 py-4 flex gap-3">
+    <%= button_to "Add to my list", user_foods_path, params: {
+   user_food: { food_id: @food.id } }, class: "flex-1
+  bg-lime-500 text-white py-2 rounded-lg hover:bg-lime-600
+  text-sm font-medium" %>
+    <%= link_to "Dismiss", scan_foods_path, class: "flex-1
+  text-center border py-2 rounded-lg hover:bg-gray-50 text-sm
+  font-medium" %>
   </div>
 </div>

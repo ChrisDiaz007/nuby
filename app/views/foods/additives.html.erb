@@ -1,0 +1,36 @@
+<div class="container mx-auto max-w-md pb-8">
+  <div class="flex items-center gap-3 p-4 bg-white mb-2
+  border-b">
+    <%= link_to food_path(@food), class: "text-gray-400" do %>
+      <i class="fa-solid fa-arrow-left"></i>
+    <% end %>
+    <h1 class="text-lg font-bold">Additives in <%= @food.name
+  %></h1>
+  </div>
+  <% if @food.additives_tags.blank? %>
+    <div class="bg-white px-4 py-6 text-center">
+      <i class="fa-solid fa-circle-check text-green-500
+  text-3xl mb-2"></i>
+      <p class="text-gray-600">No additives found in this
+        product.</p>
+    </div>
+  <% else %>
+    <div class="bg-white divide-y">
+      <% @food.additives_tags.reject { |tag| tag.match?(/e\d+[a-z]+$/i) }.each do |tag| %>
+        <% code = tag.gsub("en:", "").upcase %>
+        <%= link_to "https://en.wikipedia.org/wiki/#{tag.gsub('en:',
+  '').upcase}", target: "_blank", class: "flex justify-between
+  items-center px-4 py-4 hover:bg-gray-50" do %>
+          <div>
+            <p class="font-medium text-sm"><%= code %> — <%=
+  additive_name(tag.gsub("en:", "")) %></p>
+            <p class="text-xs text-gray-400">Tap to view
+              description</p>
+          </div>
+          <i class="fa-solid fa-arrow-up-right-from-square
+  text-gray-400 text-sm"></i>
+        <% end %>
+      <% end %>
+    </div>
+  <% end %>
+</div>
