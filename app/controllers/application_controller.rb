@@ -9,6 +9,6 @@ class ApplicationController < ActionController::Base
   end
 
   def after_sign_up_path_for(resource)
-    new_calorie_profile_path
+    survey_calorie_profile_path
   end
 end

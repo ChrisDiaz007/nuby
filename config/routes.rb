@@ -15,5 +15,7 @@ Rails.application.routes.draw do
   resources :food_logs, only: [:index, :new, :create, :destroy]
   get "dashboard", to: "dashboard#show", as: :dashboard
   resource :calorie_profile, only: [:new, :create, :edit, :update]
+  get "calorie_profile/survey", to: "calorie_profiles#survey", as: :survey_calorie_profile
+  patch "calorie_profile/survey", to: "calorie_profiles#update_survey", as: :update_survey_calorie_profile
   resource :profile, only: [:show, :edit, :update]
 end

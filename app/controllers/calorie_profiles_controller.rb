@@ -50,10 +50,39 @@ class CalorieProfilesController < ApplicationController
     end
   end
 
+  def survey
+    @calorie_profile = current_user.calorie_profile || CalorieProfile.new
+  end
+
+  def update_survey
+    @calorie_profile = current_user.calorie_profile || current_user.build_calorie_profile
+
+    @calorie_profile.assign_attributes(survey_params)
+    @calorie_profile.entry_method = "survey"
+    @calorie_profile.daily_target = CalorieCalculatorService.calculate(
+      age:            @calorie_profile.age,
+      sex:            @calorie_profile.sex,
+      weight_lbs:     @calorie_profile.weight_lbs,
+      height_cm:      @calorie_profile.height_cm,
+      activity_level: @calorie_profile.activity_level,
+      goal_type:      @calorie_profile.goal_type
+    )
+
+    if @calorie_profile.save
+      redirect_to root_path, notice: "Calorie goal set to #{@calorie_profile.daily_target} kcal!"
+    else
+      render :survey, status: :unprocessable_entity
+    end
+  end
+
   private
 
   def calorie_profile_params
     params.require(:calorie_profile).permit(:daily_target, :entry_method, :age, :sex, :weight_lbs, :height_cm, :activity_level,
     :goal_type)
+  end
+
+  def survey_params
+    params.require(:calorie_profile).permit(:age, :sex, :weight_lbs, :height_cm, :activity_level, :goal_type)
   end
 end
