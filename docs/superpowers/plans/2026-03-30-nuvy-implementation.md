@@ -1,8 +1,8 @@
-# Nuvy Implementation Plan
+# Nuby Implementation Plan
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Build Nuvy — a food barcode scanning, nutritional lookup, and daily calorie tracking Rails web app.
+**Goal:** Build Nuby — a food barcode scanning, nutritional lookup, and daily calorie tracking Rails web app.
 
 **Architecture:** Data models are built first (Option C), then features are layered on top slice by slice. Each feature has its own controller, service (where logic is needed), and views. We follow TDD: write a failing test, then write the code to make it pass.
 
@@ -2494,7 +2494,7 @@ Open `app/views/layouts/application.html.erb`. Update the body to add bottom pad
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Nuvy</title>
+    <title>Nuby</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
@@ -2537,7 +2537,7 @@ git commit -m "Update navbar with bottom navigation for dashboard, scan, and sav
 
 ## Done!
 
-You now have a fully functional Nuvy app with:
+You now have a fully functional Nuby app with:
 
 - Barcode scanning (camera on mobile, manual on desktop)
 - OpenFoodFacts food lookup with local caching

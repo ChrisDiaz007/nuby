@@ -1,4 +1,4 @@
-# Nuvy
+# Nuby
 
 A mobile-first Rails web app that helps users understand the nutritional quality of food by scanning barcodes and tracking daily calorie intake against a personal goal.
 

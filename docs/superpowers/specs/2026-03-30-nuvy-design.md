@@ -1,4 +1,4 @@
-# Nuvy — App Design Spec
+# Nuby — App Design Spec
 **Date:** 2026-03-30
 **Status:** Approved
 
@@ -6,14 +6,14 @@
 
 ## Overview
 
-Nuvy is a mobile-first Rails web app that helps users understand the nutritional quality of food by scanning barcodes, and tracks their daily calorie intake against a personal goal. The long-term vision is a Hotwire Native iOS app; the initial target is a mobile web app.
+Nuby is a mobile-first Rails web app that helps users understand the nutritional quality of food by scanning barcodes, and tracks their daily calorie intake against a personal goal. The long-term vision is a Hotwire Native iOS app; the initial target is a mobile web app.
 
 ---
 
 ## Core User Flow
 
 1. User scans a food barcode (camera on mobile, manual input on desktop)
-2. Nuvy looks up the food via the OpenFoodFacts API
+2. Nuby looks up the food via the OpenFoodFacts API
 3. A food info card is shown — user can add the food to their list or dismiss it
 4. From their saved foods list, the user logs meals (breakfast, lunch, dinner)
 5. A dashboard shows today's meal table, daily progress, and a 7-day calorie chart
