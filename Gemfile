@@ -75,3 +75,4 @@ gem 'devise'
 gem 'openfoodfacts'
 gem "sassc-rails"
 gem 'htmlbeautifier'
+gem "simple_form"
