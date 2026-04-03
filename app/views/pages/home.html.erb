@@ -101,10 +101,12 @@
     </div>
   </div>
 <% else %>
-  <div class="">
-    <%= image_tag "mascot.png", class: "" %>
+  <div class="text-center flex flex-col gap-5 h-screen m-10 rounded-3xl bg-[#f2ecf3] ">
+    <%= image_tag "mascot.png", class: "rounded-3xl sm:mx-auto sm:p-0" %>
+    <h1 class="text-2xl font-medium">Welcome!</h1>
     <h3 class="text-xl font-bold">Track food facts and daily calories, reach your health goals</h3>
     <p class="text-sm">This app simplifies nutrition and makes healthy living truly achievable.</p>
-    <%= link_to "Get Ready", new_user_session_path, class: "text-center rounded-3xl py-2 bg-green-600 block w-full" %>
+    <%= link_to "Get Started", new_user_session_path, class: "rounded-3xl py-2 m-3 bg-black text-white" %>
+    <%= link_to "Sign-in", new_user_session_path, class: "border rounded-3xl py-2 m-3" %>
   </div>
 <% end %>

@@ -1,4 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=MuseoModerno:wght@200;500;700&family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap");
+
+body {
+  background: linear-gradient(180deg,rgba(246, 239, 227, 1) 0%, rgba(255, 237, 237, 1) 25%, rgba(242, 236, 243, 1) 40%);
+  min-height: 100vh;
+  font-family: Poppins;
+}
 
 :root {
   --bg:       #E8F5DE;

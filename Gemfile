@@ -74,3 +74,4 @@ gem "ostruct"
 gem 'devise'
 gem 'openfoodfacts'
 gem "sassc-rails"
+gem 'htmlbeautifier'
