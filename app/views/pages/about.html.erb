@@ -1,0 +1,13 @@
+<div class="text-center flex flex-col p-15">
+  <div class="flex flex-col gap-3 text-xl font-medium">
+    <p class="text-3xl">Meet Nuby</p>
+    <p>Your Partner that simplifies nutrition and makes healthy living truly achievable</p>
+  </div>
+  <div class="rounded-2xl p-15 -rotate-5">
+    <%= image_tag 'chibi.png', class: "rounded-2xl" %>
+  </div>
+  <div class="flex flex-col">
+    <%= link_to 'Create Account', new_user_registration_path, class: "rounded-3xl py-2 m-3 bg-black text-white" %>
+    <%= link_to '⬅ Go Back', root_path, class: 'border rounded-3xl py-2 m-3' %>
+  </div>
+</div>
