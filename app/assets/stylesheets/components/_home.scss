@@ -4,10 +4,6 @@ body {
   background: linear-gradient(180deg,rgba(246, 239, 227, 1) 0%, rgba(255, 237, 237, 1) 25%, rgba(242, 236, 243, 1) 40%);
   min-height: 100vh;
   font-family: Poppins;
-}
-
-:root {
-  --bg:       #E8F5DE;
   --card:     #FFFFFF;
   --green:    #5CBE3B;
   --green-dk: #3D9220;
@@ -17,6 +13,8 @@ body {
   --shadow:   rgba(60, 100, 40, 0.10);
   --border:   #D3ECBF;
 }
+
+
 
 .hp {
   font-family: 'Nunito', sans-serif;
