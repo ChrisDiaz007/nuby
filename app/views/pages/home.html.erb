@@ -1,13 +1,13 @@
 <% if user_signed_in? %>
-  <div class="hp sm:max-w-md sm:mx-auto">
+  <div class="px-5 pt-7 sm:max-w-md sm:mx-auto">
     <%# HEADER %>
     <div class="fu d1" style="display:flex; align-items:center; justify-content:space-between; margin-bottom:26px;">
       <div style="display:flex; align-items:center; gap:12px;">
-        <div style="width:46px; height:46px; border-radius:50%; background:var(--green); display:flex; align-items:center; justify-content:center; color:#fff; font-size:17px; font-weight:800; flex-shrink:0; box-shadow:0 4px 10px rgba(92,190,59,0.35);">
+        <div class="w-10 h-10 rounded-full flex items-center justify-center bg-indigo-300 text-white text-2xl font-bold">
           <%= current_user.first_name[0].upcase %>
         </div>
         <div>
-          <p style="font-size:19px; font-weight:800; color:var(--text); margin:0; line-height:1.2;"><%= current_user.first_name.capitalize %> <%= current_user.last_name.capitalize %> 👋</p>
+          <p class="text-xl font-medium"><%= current_user.first_name.capitalize %> <%= current_user.last_name.capitalize %> 👋</p>
           <p style="font-size:12px; color:var(--sub); margin:0;">Track your daily intake</p>
         </div>
       </div>

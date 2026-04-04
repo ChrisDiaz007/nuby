@@ -8,21 +8,9 @@ body {
   --green:    #5CBE3B;
   --green-dk: #3D9220;
   --green-lt: #C8EDAF;
-  --text:     #1C2E15;
   --sub:      #7A8F72;
   --shadow:   rgba(60, 100, 40, 0.10);
   --border:   #D3ECBF;
-}
-
-
-
-.hp {
-  font-family: 'Nunito', sans-serif;
-  background: var(--bg);
-  min-height: 100vh;
-  color: var(--text);
-  padding: 28px 20px 110px;
-  -webkit-font-smoothing: antialiased;
 }
 
 @keyframes fadeUp {
